@@ -1,9 +1,9 @@
 DROP DATABASE IF EXISTS `Fitness`;
 DROP DATABASE IF EXISTS `FitnessBuddy`;
 
-CREATE DATABASE `Fitness`;
+CREATE DATABASE `FitnessBuddy`;
 
-USE `Fitness`;
+USE `FitnessBuddy`;
 
 -- FOREIGN KEY Username_Const(Username) REFERENCES Customer(Username) 
     
