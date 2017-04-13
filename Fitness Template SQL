@@ -50,3 +50,5 @@ CREATE TABLE Nutrition(
     Fiber INT,
     Carbohydrate INT
 );
+
+INSERT INTO `User` (`Username`, `Password`, `EmailAddress`, `FirstName`,`MiddleName`, `LastName`) VALUES (N'abc', N'123',N'@gmail',N'A',N'B', N'c');
