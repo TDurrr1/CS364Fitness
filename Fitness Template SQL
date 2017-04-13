@@ -1,3 +1,5 @@
+DROP DATABASE IF EXISTS `Fitness`;
+
 CREATE DATABASE `Fitness`;
 
 USE `Fitness`;
