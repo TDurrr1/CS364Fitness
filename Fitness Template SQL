@@ -1,4 +1,5 @@
 DROP DATABASE IF EXISTS `Fitness`;
+DROP DATABASE IF EXISTS `FitnessBuddy`;
 
 CREATE DATABASE `Fitness`;
 
