@@ -50,3 +50,14 @@ CREATE TABLE `Nutrition` (
 
 -- Sample INSERT statement
 INSERT INTO `User` (`Username`, `Password`, `EmailAddress`, `FirstName`,`MiddleName`, `LastName`) VALUES (N'abc', N'123',N'@gmail',N'A',N'B', N'c');
+
+
+-- INSERTING 7 USERS
+INSERT INTO `User` (`Username`, `Password`, `EmailAddress`, `FirstName`,`MiddleName`, `LastName`, `Location`, `Birthdate`) VALUES (N'WYenter', N'secretpassword',N'yenter.william@uwlax.edu',N'Will',N' ', N'Yenter', N'Grafton', DATE '1995-09-05');
+INSERT INTO `User` (`Username`, `Password`, `EmailAddress`, `FirstName`,`MiddleName`, `LastName`, `Location`, `Birthdate`) VALUES (N'User2', N'unicorn3',N'myemail@gmail.com',N'Sally',N' ', N'Smith', N'La Crosse', DATE '1995-01-014');
+INSERT INTO `User` (`Username`, `Password`, `EmailAddress`, `FirstName`,`MiddleName`, `LastName`, `Location`, `Birthdate`) VALUES (N'URFIRED', N'WALL',N'president@whitehouse.gov',N'Donald',N'John', N'Trump', N'Washington D.C.', DATE '1946-06-14');
+INSERT INTO `User` (`Username`, `Password`, `EmailAddress`, `FirstName`,`MiddleName`, `LastName`, `Location`, `Birthdate`) VALUES (N'randysavage102', N'password123',N'randysavage102@gmail.com',N'Truman',N'Walter', N'Brown', N'Milwaukee', DATE '1991-08-03');
+INSERT INTO `User` (`Username`, `Password`, `EmailAddress`, `FirstName`,`MiddleName`, `LastName`, `Location`, `Birthdate`) VALUES (N'Austin1', N'kachow',N'drift85@gmail.com',N'Austin',N'Larry', N'Schmidt', N'La Crosse', DATE '1996-07-27');
+INSERT INTO `User` (`Username`, `Password`, `EmailAddress`, `FirstName`,`MiddleName`, `LastName`, `Location`, `Birthdate`) VALUES (N'User1', N'password',N'asdfqweori@gmail.com',N'Jane',N'Rose', N'Smith', N'La Crosse', DATE '1995-09-10');
+INSERT INTO `User` (`Username`, `Password`, `EmailAddress`, `FirstName`,`MiddleName`, `LastName`, `Location`, `Birthdate`) VALUES (N'TDurr', N'1234567890',N'tylerdurr@gmail.com',N'Tyler',N' ', N'Durr', N'Edgar', DATE '1996-10-03');
+INSERT INTO `User` (`Username`, `Password`, `EmailAddress`, `FirstName`,`MiddleName`, `LastName`, `Location`, `Birthdate`) VALUES (N'JoeHimself', N'lemonysnicket13',N'schmoe.joe@uwlax.edu',N'Joe',N' ', N'Schmoe', N'La Crosse', DATE '1987-01-02');
