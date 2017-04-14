@@ -5,17 +5,19 @@ CREATE DATABASE `FitnessBuddy`;
 USE `FitnessBuddy`;
     
 CREATE TABLE `User` (
-	`Username`     NVARCHAR(20) PRIMARY KEY NOT NULL,
+	`UserID`       INT          PRIMARY KEY NOT NULL AUTO_INCREMENT,
+	`Username`     NVARCHAR(20) UNIQUE NOT NULL,
     `Password`     NVARCHAR(20) NOT NULL,
     `EmailAddress` NVARCHAR(32) NOT NULL,
     `FirstName`    NVARCHAR(24) NOT NULL,
     `MiddleName`   NVARCHAR(24),
     `LastName`     NVARCHAR(24) NOT NULL,
     `Location`     NVARCHAR(24),
-    `Birthdate`    DATE 
+    `Birthdate`    DATE
 );
 
 CREATE TABLE `Sleep` (
+	`UserID`   INT  NOT NULL,
 	`Date`     DATE PRIMARY KEY NOT NULL,
     `Quality`  INT,
     `Bedtime`  TIME,
@@ -23,6 +25,7 @@ CREATE TABLE `Sleep` (
 );
 
 CREATE TABLE `BodyMeasurements` (
+	`UserID`            INT  NOT NULL,
 	`Date`              DATE PRIMARY KEY NOT NULL,
     `Weight`            INT,
     `Height`            INT,
@@ -32,6 +35,7 @@ CREATE TABLE `BodyMeasurements` (
 );
 
 CREATE TABLE `Activity` (
+	`UserID`         INT  NOT NULL,
 	`Date`           DATE PRIMARY KEY NOT NULL,
     `Duration`       INT,
     `CaloriesBurned` INT,
@@ -39,6 +43,7 @@ CREATE TABLE `Activity` (
 );
 
 CREATE TABLE `Nutrition` (
+	`UserID`         INT  NOT NULL,
 	`Date`           DATE PRIMARY KEY NOT NULL,
     `CalorieIntake`  INT,
     `UnsaturatedFat` INT,
@@ -49,15 +54,59 @@ CREATE TABLE `Nutrition` (
 );
 
 -- Sample INSERT statement
-INSERT INTO `User` (`Username`, `Password`, `EmailAddress`, `FirstName`,`MiddleName`, `LastName`) VALUES (N'abc', N'123',N'@gmail',N'A',N'B', N'c');
+-- INSERT INTO `User` (`Username`, `Password`, `EmailAddress`, `FirstName`,`MiddleName`, `LastName`) VALUES (N'abc', N'123',N'@gmail',N'A',N'B', N'c');
 
+-- Add in foreign key relationships
+
+ALTER TABLE `Sleep` ADD CONSTRAINT `FK_SleepUserID`
+    FOREIGN KEY (`UserID`) REFERENCES `User` (`UserID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE `Activity` ADD CONSTRAINT `FK_ActivityUserID`
+    FOREIGN KEY (`UserID`) REFERENCES `User` (`UserID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE `BodyMeasurements` ADD CONSTRAINT `FK_BodyMeasurementsUserID`
+    FOREIGN KEY (`UserID`) REFERENCES `User` (`UserID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE `Nutrition` ADD CONSTRAINT `FK_NutritionUserID`
+    FOREIGN KEY (`UserID`) REFERENCES `User` (`UserID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- DATA INSERTION
 
 -- INSERTING 7 USERS
+
 INSERT INTO `User` (`Username`, `Password`, `EmailAddress`, `FirstName`,`MiddleName`, `LastName`, `Location`, `Birthdate`) VALUES (N'WYenter', N'secretpassword',N'yenter.william@uwlax.edu',N'Will',N' ', N'Yenter', N'Grafton', DATE '1995-09-05');
 INSERT INTO `User` (`Username`, `Password`, `EmailAddress`, `FirstName`,`MiddleName`, `LastName`, `Location`, `Birthdate`) VALUES (N'User2', N'unicorn3',N'myemail@gmail.com',N'Sally',N' ', N'Smith', N'La Crosse', DATE '1995-01-014');
-INSERT INTO `User` (`Username`, `Password`, `EmailAddress`, `FirstName`,`MiddleName`, `LastName`, `Location`, `Birthdate`) VALUES (N'URFIRED', N'WALL',N'president@whitehouse.gov',N'Donald',N'John', N'Trump', N'Washington D.C.', DATE '1946-06-14');
+INSERT INTO `User` (`Username`, `Password`, `EmailAddress`, `FirstName`,`MiddleName`, `LastName`, `Location`, `Birthdate`) VALUES (N'URFIRED', N'WALL',N'president@whitehouse.gov',N'Donald',N'John', N'Drumpf', N'Washington D.C.', DATE '1946-06-14');
 INSERT INTO `User` (`Username`, `Password`, `EmailAddress`, `FirstName`,`MiddleName`, `LastName`, `Location`, `Birthdate`) VALUES (N'randysavage102', N'password123',N'randysavage102@gmail.com',N'Truman',N'Walter', N'Brown', N'Milwaukee', DATE '1991-08-03');
 INSERT INTO `User` (`Username`, `Password`, `EmailAddress`, `FirstName`,`MiddleName`, `LastName`, `Location`, `Birthdate`) VALUES (N'Austin1', N'kachow',N'drift85@gmail.com',N'Austin',N'Larry', N'Schmidt', N'La Crosse', DATE '1996-07-27');
 INSERT INTO `User` (`Username`, `Password`, `EmailAddress`, `FirstName`,`MiddleName`, `LastName`, `Location`, `Birthdate`) VALUES (N'User1', N'password',N'asdfqweori@gmail.com',N'Jane',N'Rose', N'Smith', N'La Crosse', DATE '1995-09-10');
 INSERT INTO `User` (`Username`, `Password`, `EmailAddress`, `FirstName`,`MiddleName`, `LastName`, `Location`, `Birthdate`) VALUES (N'TDurr', N'1234567890',N'tylerdurr@gmail.com',N'Tyler',N' ', N'Durr', N'Edgar', DATE '1996-10-03');
 INSERT INTO `User` (`Username`, `Password`, `EmailAddress`, `FirstName`,`MiddleName`, `LastName`, `Location`, `Birthdate`) VALUES (N'JoeHimself', N'lemonysnicket13',N'schmoe.joe@uwlax.edu',N'Joe',N' ', N'Schmoe', N'La Crosse', DATE '1987-01-02');
+
+-- Nutrition table data
+
+INSERT INTO `Nutrition` (`UserID`, `Date`, `CalorieIntake`, `UnsaturatedFat`, `SaturatedFat`, `Protein`, `Fiber`, `Carbohydrate`)
+	VALUES (2, '2016-12-31', 2251, 50, 22, 70, 22, 273);
+INSERT INTO `Nutrition` (`UserID`, `Date`, `CalorieIntake`, `UnsaturatedFat`, `SaturatedFat`, `Protein`, `Fiber`, `Carbohydrate`)
+	VALUES (2, '2016-02-29', 1931, 52, 20, 59, 30, 266);
+INSERT INTO `Nutrition` (`UserID`, `Date`, `CalorieIntake`, `UnsaturatedFat`, `SaturatedFat`, `Protein`, `Fiber`, `Carbohydrate`)
+	VALUES (3, '2016-01-01', 1542, 53, 24, 48, 20, 293);
+INSERT INTO `Nutrition` (`UserID`, `Date`, `CalorieIntake`, `UnsaturatedFat`, `SaturatedFat`, `Protein`, `Fiber`, `Carbohydrate`)
+	VALUES (4, '2017-02-12', 1558, 43, 21, 56, 23, 251);
+INSERT INTO `Nutrition` (`UserID`, `Date`, `CalorieIntake`, `UnsaturatedFat`, `SaturatedFat`, `Protein`, `Fiber`, `Carbohydrate`)
+	VALUES (4, '2017-04-03', 1986, 57, 18, 48, 25, 253);
+INSERT INTO `Nutrition` (`UserID`, `Date`, `CalorieIntake`, `UnsaturatedFat`, `SaturatedFat`, `Protein`, `Fiber`, `Carbohydrate`)
+	VALUES (4, '2017-04-04', 1689, 53, 21, 52, 26, 267);
+INSERT INTO `Nutrition` (`UserID`, `Date`, `CalorieIntake`, `UnsaturatedFat`, `SaturatedFat`, `Protein`, `Fiber`, `Carbohydrate`)
+	VALUES (5, '2017-04-05', 2431, 60, 24, 56, 30, 321);
+INSERT INTO `Nutrition` (`UserID`, `Date`, `CalorieIntake`, `UnsaturatedFat`, `SaturatedFat`, `Protein`, `Fiber`, `Carbohydrate`)
+	VALUES (5, '2017-04-06', 1722, 52, 18, 48, 29, 264);
+INSERT INTO `Nutrition` (`UserID`, `Date`, `CalorieIntake`, `UnsaturatedFat`, `SaturatedFat`, `Protein`, `Fiber`, `Carbohydrate`)
+	VALUES (5, '2017-04-07', 2330, 42, 21, 74, 27, 292);
+INSERT INTO `Nutrition` (`UserID`, `Date`, `CalorieIntake`, `UnsaturatedFat`, `SaturatedFat`, `Protein`, `Fiber`, `Carbohydrate`)
+	VALUES (5, '2017-04-08', 2446, 41, 24, 68, 30, 253);
+INSERT INTO `Nutrition` (`UserID`, `Date`, `CalorieIntake`, `UnsaturatedFat`, `SaturatedFat`, `Protein`, `Fiber`, `Carbohydrate`)
+	VALUES (6, '2017-04-09', 2073, 49, 15, 50, 23, 289);
+INSERT INTO `Nutrition` (`UserID`, `Date`, `CalorieIntake`, `UnsaturatedFat`, `SaturatedFat`, `Protein`, `Fiber`, `Carbohydrate`)
+	VALUES (6, '2017-04-10', 2346, 41, 25, 74, 26, 285);
+INSERT INTO `Nutrition` (`UserID`, `Date`, `CalorieIntake`, `UnsaturatedFat`, `SaturatedFat`, `Protein`, `Fiber`, `Carbohydrate`)
+	VALUES (7, '2017-04-11', 2473, 47, 24, 41, 25, 280);
+INSERT INTO `Nutrition` (`UserID`, `Date`, `CalorieIntake`, `UnsaturatedFat`, `SaturatedFat`, `Protein`, `Fiber`, `Carbohydrate`)
+	VALUES (7, '2017-04-12', 2392, 52, 15, 75, 29, 296);
