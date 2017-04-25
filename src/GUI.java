@@ -11,10 +11,15 @@ public class GUI extends JFrame implements ActionListener
 {	
 	//Main window, button panel, buttons and timer
 	private JFrame logWindow, mainMenu, signWindow;
-	private JFrame diet, sleep, act, body;
-	private Button log, back, sign, dietB, sleepB, actB, bodyB;
-	private Button dietBack, sleepBack, actBack, bodyBack;
+	private JFrame diet, sleep, act, body, submit;
+	private Button log, back, sign, dietB, sleepB, actB, bodyB, submitB, submitUser;
+	private Button dietBack, sleepBack, actBack, bodyBack, submitBack, submitEnter;
 	private Button signBack;
+	private JTextField user;
+	private JTextField firstName, middleName, lastName, location, email, user1;
+	private JPasswordField pass, pass1, pass2;
+	private JTextField day, month, year, calorie, unsaturatedFat, saturatedFat, protein, fiber, carbohydrate,
+	quality, hour, weight, height, bodyFatPercentage, bmi, waistSize, duration, caloriesBurned, activity;
 	
 	public void makeWindow()
 	{
@@ -26,8 +31,8 @@ public class GUI extends JFrame implements ActionListener
 		logWindow.setLayout(new GridLayout(8, 8));
 		
 		//Create text field and button
-		JTextField user = new JTextField("Username", 20);
-		JPasswordField pass = new JPasswordField("Password", 20);
+		user = new JTextField("Username", 20);
+		pass = new JPasswordField("Password", 20);
 		log = new Button("LOG IN");
 		sign = new Button("NEW USER? SIGN UP!");
 		log.addActionListener(this);
@@ -46,21 +51,30 @@ public class GUI extends JFrame implements ActionListener
 		signWindow.setLayout(new GridLayout(8, 8));
 		
 		//Create text file for sign up window
-		JTextField firstName = new JTextField("First Name", 20);
-		JTextField lastName = new JTextField("Last Name", 20);
-		JTextField email = new JTextField("Email Address", 20);
-		JTextField user1 = new JTextField("Username", 20);
-		JPasswordField pass1 = new JPasswordField("Password", 20);
-		JPasswordField pass2 = new JPasswordField("Password", 20);
+		firstName = new JTextField("First Name", 20);
+		middleName = new JTextField("Middle Name", 20);
+		lastName = new JTextField("Last Name", 20);
+		location = new JTextField("Location", 20);
+		email = new JTextField("Email Address", 20);
+		user1 = new JTextField("Username", 20);
+		pass1 = new JPasswordField("Password", 20);
+		pass2 = new JPasswordField("Password", 20);
+		
+		
 		signBack = new Button("Login Window");
 		signBack.addActionListener(this);
+		submitUser = new Button("Sign In. It's Free!");
+		submitUser.addActionListener(this);
 		
 		signWindow.add(firstName);
+		signWindow.add(middleName);
 		signWindow.add(lastName);
+		signWindow.add(location);
 		signWindow.add(email);
 		signWindow.add(user1);
 		signWindow.add(pass1);
 		signWindow.add(pass2);
+		signWindow.add(submitUser);
 		signWindow.add(signBack);
 		
 		//Create a main menu window
@@ -75,18 +89,22 @@ public class GUI extends JFrame implements ActionListener
 		sleepB = new Button("SLEEP");
 		actB = new Button("ACTIVITY");
 		bodyB = new Button("BODY");
+		submitB = new Button("SUBMIT DATA");
 		back = new Button("LOG OUT");
+		
 		
 		dietB.addActionListener(this);
 		sleepB.addActionListener(this);
 		actB.addActionListener(this);
 		bodyB.addActionListener(this);
+		submitB.addActionListener(this);
 		back.addActionListener(this);
 		
 		mainMenu.add(dietB);
 		mainMenu.add(sleepB);
 		mainMenu.add(actB);
 		mainMenu.add(bodyB);
+		mainMenu.add(submitB);
 		mainMenu.add(back);
 		
 		//Create diet, sleep, activity, body windows
@@ -134,6 +152,65 @@ public class GUI extends JFrame implements ActionListener
 		bodyBack = new Button("MAIN MENU");
 		bodyBack.addActionListener(this);
 		body.add(bodyBack);
+		
+		//Submit window
+		submit = new JFrame("PLEASE ENTER DATA");
+		submit.setSize(600, 600);
+		submit.setLocation(200, 20);
+		submit.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		submit.setLayout(new GridLayout(8, 8));
+		
+		//Submit function
+		day  = new JTextField("Day", 2);
+		month  = new JTextField("Month", 2);
+		year  = new JTextField("Year", 4);
+		calorie = new JTextField("Calories Intake", 20);
+		unsaturatedFat = new JTextField("Unsaturated Fat", 20);
+		saturatedFat = new JTextField("Saturated Fat", 20);
+		protein = new JTextField("Protein", 20);
+		fiber = new JTextField("Fiber", 20);
+		carbohydrate = new JTextField("Carbohydrate", 20);
+		quality  = new JTextField("Quality", 2);
+		hour  = new JTextField("Hours", 20);	
+		weight = new JTextField("Weight", 2);
+	    height = new JTextField("Height", 2);
+	    bodyFatPercentage = new JTextField("Body Fat Percentage", 2);
+	    bmi = new JTextField("BMI", 20);
+	    waistSize = new JTextField("Waist Size", 20);
+	    duration = new JTextField("Duration", 20);
+	    caloriesBurned = new JTextField("Calories Burned", 20);
+	    activity = new JTextField("Name of Activity", 20);
+	   
+		submit.add(day);
+		submit.add(month);
+		submit.add(year);
+		submit.add(calorie);
+		submit.add(unsaturatedFat);
+		submit.add(saturatedFat);
+		submit.add(protein);
+		submit.add(protein);
+		submit.add(fiber);
+		submit.add(carbohydrate);
+		submit.add(quality);
+		submit.add(hour);
+		submit.add(weight);
+		submit.add(height);
+		submit.add(bodyFatPercentage);
+		submit.add(bmi);
+		submit.add(waistSize);
+		submit.add(duration);
+		submit.add(caloriesBurned);
+		submit.add(activity);
+	
+		submitBack = new Button("MAIN MENU");
+		submitEnter = new Button("SUBMIT DATA");
+		
+		submitBack.addActionListener(this);
+		submitEnter.addActionListener(this);
+		
+		submit.add(submitEnter);
+		submit.add(submitBack);
+		
 		
 		logWindow.setVisible(true);
 	}
@@ -201,11 +278,25 @@ public class GUI extends JFrame implements ActionListener
 			sleep.setVisible(false);
 			mainMenu.setVisible(true);
 		}
-	}
-	//Main method
-		public static void main(String[] args) 
+		if (e.getSource() == submitB)
 		{
-			GUI g = new GUI();
-			g.makeWindow();
+			mainMenu.setVisible(false);
+			submit.setVisible(true);
 		}
+		if (e.getSource() == submitBack)
+		{
+			submit.setVisible(false);
+			mainMenu.setVisible(true);
+		}
+		if (e.getSource() == submitEnter)
+		{
+			
+		}
+		if (e.getSource() == submitUser)
+		{
+			signWindow.setVisible(false);
+			logWindow.setVisible(true);
+		}
+		
+	}
 }
