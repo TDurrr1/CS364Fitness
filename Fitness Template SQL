@@ -1,56 +1,53 @@
+DROP DATABASE IF EXISTS `Fitness`;
 DROP DATABASE IF EXISTS `FitnessBuddy`;
 
 CREATE DATABASE `FitnessBuddy`;
 
 USE `FitnessBuddy`;
+
+-- FOREIGN KEY Username_Const(Username) REFERENCES Customer(Username) 
     
-CREATE TABLE `User` (
-	`UserID`       INT          PRIMARY KEY NOT NULL AUTO_INCREMENT,
-	`Username`     NVARCHAR(20) UNIQUE NOT NULL,
-    `Password`     NVARCHAR(20) NOT NULL,
+CREATE TABLE `User`(
+	`Username` NVARCHAR(20) PRIMARY KEY NOT NULL,
+    `Password` NVARCHAR(20) NOT NULL,
     `EmailAddress` NVARCHAR(32) NOT NULL,
-    `FirstName`    NVARCHAR(24) NOT NULL,
-    `MiddleName`   NVARCHAR(24),
-    `LastName`     NVARCHAR(24) NOT NULL,
-    `Location`     NVARCHAR(24),
-    `Birthdate`    DATE
+    `FirstName` NVARCHAR(24) NOT NULL,
+    `MiddleName` NVARCHAR(24),
+    `LastName` NVARCHAR(24) NOT NULL,
+    `Location` NVARCHAR(24),
+    Birthdate DATE 
 );
 
-CREATE TABLE `Sleep` (
-	`UserID`   INT  NOT NULL,
-	`Date`     DATE PRIMARY KEY NOT NULL,
-    `Quality`  INT,
-    `Bedtime`  TIME,
-    `WakeTime` TIME
+CREATE TABLE `Sleep`(
+	`Date` DATE PRIMARY KEY NOT NULL,
+    Quality INT,
+    `Hour` NUMERIC(18,4)
 );
 
-CREATE TABLE `BodyMeasurements` (
-	`UserID`            INT  NOT NULL,
-	`Date`              DATE PRIMARY KEY NOT NULL,
-    `Weight`            INT,
-    `Height`            INT,
-    `BodyFatPercentage` NUMERIC(18, 4),
-    `BMI`               NUMERIC(18, 4),
-    `WaistSize`         INT
+CREATE TABLE BodyMeasurements(
+	`Date` DATE PRIMARY KEY NOT NULL,
+    Weight INT,
+    Height INT,
+    BodyFatPercentage Decimal(18,4),
+    BMI Decimal(18,4),
+    WaistSize INT
 );
 
-CREATE TABLE `Activity` (
-	`UserID`         INT  NOT NULL,
-	`Date`           DATE PRIMARY KEY NOT NULL,
-    `Duration`       INT,
-    `CaloriesBurned` INT,
-    `Name`           NVARCHAR(24)
+CREATE TABLE Activity(
+	`Date` DATE PRIMARY KEY NOT NULL,
+    Duration INT,
+    CaloriesBurned INT,
+    `Name` NVARCHAR(24)
 );
 
-CREATE TABLE `Nutrition` (
-	`UserID`         INT  NOT NULL,
-	`Date`           DATE PRIMARY KEY NOT NULL,
-    `CalorieIntake`  INT,
-    `UnsaturatedFat` INT,
-    `SaturatedFat`   INT,
-    `Protein`        INT,
-    `Fiber`          INT,
-    `Carbohydrate`   INT
+CREATE TABLE Nutrition(
+	Date DATE PRIMARY KEY NOT NULL,
+    CalorieIntake INT,
+    UnsaturatedFat INT,
+    SaturatedFat INT,
+    Protein INT,
+    Fiber INT,
+    Carbohydrate INT
 );
 
 -- Sample INSERT statement
