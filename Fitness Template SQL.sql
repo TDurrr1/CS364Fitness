@@ -131,7 +131,7 @@ INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Hours`)
 INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Hours`)
 	VALUES (2, '2017-02-11', 10, 6);
 INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Hours`)
-	VALUES (2, '2017-02-12', 2, '23:53:00', '7:51:00');
+	VALUES (2, '2017-02-12', 2, 5);
 INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Hours`)
 	VALUES (3, '2017-02-13', 1, 3);
 INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Hours`)
