@@ -2,14 +2,27 @@ import java.awt.Button;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
 @SuppressWarnings("serial")
-public class GUI extends JFrame implements ActionListener
-{	
+public class GUI extends JFrame implements ActionListener {	
+	
+	/*** Class constants ***/
+	
+	public static final String DEFAULT_CONNECTION_URL = "jdbc:mysql://localhost/FitnessBuddy?user=example&password=password";
+	
+	/*** Class variables ***/
+	
+	private Connection database = null;
+	
 	//Main window, button panel, buttons and timer
 	private JFrame logWindow, mainMenu, signWindow, displayWindow, submit;
 	private Button log, back, sign, dietB, sleepB, actB, bodyB, submitB, submitUser, display;
@@ -22,6 +35,7 @@ public class GUI extends JFrame implements ActionListener
 	quality, hour, weight, height, bodyFatPercentage, bmi, waistSize, duration, caloriesBurned, activity;
 	private JTable data;
 	private JTextField day1, month1, year1;
+	
 
 	public void logWindow()
 	{
@@ -202,6 +216,8 @@ public class GUI extends JFrame implements ActionListener
 
 	public void makeWindow()
 	{
+		Connection database = FitnessBuddy.connect(GUI.DEFAULT_CONNECTION_URL);
+		
 		logWindow();
 		signWindow();
 		mainMenu();
@@ -245,7 +261,19 @@ public class GUI extends JFrame implements ActionListener
 		}
 		if (e.getSource() == submitEnter)
 		{
-
+			try {
+				if (this.submitData()) {
+					this.displaySuccess("Data successfully submitted.");
+					submit.setVisible(false);
+					mainMenu.setVisible(true);
+				}
+				else {
+					this.displayError("Data entry error", "Data not submitted. Check the submission window for errors.");
+				}
+			}
+			catch (Exception ex) {
+				this.displayError("Error caught!", "What, you expect me to know? Find it yourself, ya lazy pile.");
+			}
 		}
 		if (e.getSource() == submitUser)
 		{
@@ -262,5 +290,52 @@ public class GUI extends JFrame implements ActionListener
 			displayWindow.setVisible(false);
 			mainMenu.setVisible(true);
 		}
+	}
+	
+	private boolean submitData() throws SQLException {
+		
+		boolean successfulSubmit = false;
+		String activityInsert = "INSERT INTO Shopping (Item, Quantity) VALUES (?, ?)";
+		String sleepInsert = "INSERT INTO Shopping (Item, Quantity) VALUES (?, ?)";
+		String bodyMeasurementsInsert = "INSERT INTO Shopping (Item, Quantity) VALUES (?, ?)";
+		String nutritionInsert = "INSERT INTO Shopping (Item, Quantity) VALUES (?, ?)";
+		
+		PreparedStatement insert = database.prepareStatement(activityInsert);
+		
+		insert = database.prepareStatement(activityInsert);
+		insert.executeUpdate();
+		
+		return successfulSubmit;
+		
+	}
+	
+	private void displaySuccess(String message) {
+		
+		this.displayPopup(false, "Success!", message);
+		
+	}
+	
+	private void displaySuccess(String title, String message) {
+		
+		this.displayPopup(false, title, message);
+		
+	}
+	
+	private void displayError(String message) {
+		
+		this.displayPopup(true, "Error!", message);
+		
+	}
+	
+	private void displayError(String title, String message) {
+		
+		this.displayPopup(true, title, message);
+		
+	}
+	
+	private void displayPopup(boolean isError, String title, String message) {
+		
+		JOptionPane.showMessageDialog(null, message, title, (isError ? JOptionPane.ERROR_MESSAGE : JOptionPane.INFORMATION_MESSAGE));
+		
 	}
 }
