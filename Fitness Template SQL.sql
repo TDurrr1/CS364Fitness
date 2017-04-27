@@ -20,8 +20,7 @@ CREATE TABLE `Sleep` (
 	`UserID`   INT  NOT NULL,
 	`Date`     DATE PRIMARY KEY NOT NULL,
     `Quality`  INT,
-    `Bedtime`  TIME,
-    `WakeTime` TIME
+    `Hours`  INT
 );
 
 CREATE TABLE `BodyMeasurements` (
@@ -119,53 +118,53 @@ INSERT INTO `Nutrition` (`UserID`, `Date`, `CalorieIntake`, `UnsaturatedFat`, `S
 INSERT INTO `Nutrition` (`UserID`, `Date`, `CalorieIntake`, `UnsaturatedFat`, `SaturatedFat`, `Protein`, `Fiber`, `Carbohydrate`)
 	VALUES (7, '2017-04-12', 2392, 52, 15, 75, 29, 296);
 
-INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Bedtime`, `WakeTime`)
-	VALUES (1, '2017-02-06', 4, '23:00:00', '7:23:00');
-INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Bedtime`, `WakeTime`)
-	VALUES (1, '2017-02-07', 5, '23:40:00', '7:44:00');
-INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Bedtime`, `WakeTime`)
-	VALUES (1, '2017-02-08', 6, '22:10:00', '7:11:00');
-INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Bedtime`, `WakeTime`)
-	VALUES (2, '2017-02-09', 5, '23:39:00', '7:40:00');
-INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Bedtime`, `WakeTime`)
-	VALUES (2, '2017-02-10', 9, '23:23:00', '7:12:00');
-INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Bedtime`, `WakeTime`)
-	VALUES (2, '2017-02-11', 10, '23:43:00', '7:33:00');
-INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Bedtime`, `WakeTime`)
+INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Hours`)
+	VALUES (1, '2017-02-06', 4, 7);
+INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Hours`)
+	VALUES (1, '2017-02-07', 5, 3);
+INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Hours`)
+	VALUES (1, '2017-02-08', 6, 8);
+INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Hours`)
+	VALUES (2, '2017-02-09', 5, 9);
+INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Hours`)
+	VALUES (2, '2017-02-10', 9, 10);
+INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Hours`)
+	VALUES (2, '2017-02-11', 10, 6);
+INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Hours`)
 	VALUES (2, '2017-02-12', 2, '23:53:00', '7:51:00');
-INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Bedtime`, `WakeTime`)
+INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Hours`)
 	VALUES (3, '2017-02-13', 1, '23:53:00', '7:12:00');
-INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Bedtime`, `WakeTime`)
+INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Hours`)
 	VALUES (3, '2017-02-14', 3, '23:21:00', '7:51:00');
-INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Bedtime`, `WakeTime`)
+INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Hours`)
 	VALUES (3, '2017-02-15', 7, '23:41:00', '7:17:00');
-INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Bedtime`, `WakeTime`)
+INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Hours`)
 	VALUES (3, '2017-02-16', 5, '23:47:00', '7:17:00');
-INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Bedtime`, `WakeTime`)
+INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Hours`)
 	VALUES (3, '2017-02-17', 10, '23:21:00', '7:15:00');
-INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Bedtime`, `WakeTime`)
+INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Hours`)
 	VALUES (4, '2017-02-18', 4, '23:32:00', '7:23:00');
-INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Bedtime`, `WakeTime`)
+INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Hours`)
 	VALUES (4, '2017-02-19', 6, '23:56:00', '7:22:00');
-INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Bedtime`, `WakeTime`)
+INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Hours`)
 	VALUES (4, '2017-02-20', 1, '23:11:00', '7:55:00');
-INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Bedtime`, `WakeTime`)
+INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Hours`)
 	VALUES (4, '2017-02-21', 7, '23:23:00', '7:23:00');
-INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Bedtime`, `WakeTime`)
+INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Hours`)
 	VALUES (4, '2017-02-22', 4, '23:53:00', '7:37:00');
-INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Bedtime`, `WakeTime`)
+INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Hours`)
 	VALUES (4, '2017-02-23', 2, '23:18:00', '7:34:00');
-INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Bedtime`, `WakeTime`)
+INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Hours`)
 	VALUES (5, '2017-02-24', 4, '22:44:00', '7:33:00');
-INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Bedtime`, `WakeTime`)
+INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Hours`)
 	VALUES (4, '2017-02-25', 8, '23:32:00', '7:10:00');
-INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Bedtime`, `WakeTime`)
+INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Hours`)
 	VALUES (5, '2017-02-26', 7, '23:04:00', '7:11:00');
-INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Bedtime`, `WakeTime`)
+INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Hours`)
 	VALUES (5, '2017-02-27', 6, '23:11:00', '7:44:00');
-INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Bedtime`, `WakeTime`)
+INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Hours`)
 	VALUES (5, '2017-02-28', 10, '22:34:00', '7:02:00');
-INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Bedtime`, `WakeTime`)
+INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Hours`)
 	VALUES (5, '2017-03-01', 1, '23:00:00', '7:22:00');
 
 INSERT INTO `BodyMeasurements` (`UserId`, `Date`, `Weight`, `Height`, `BodyFatPercentage`, `BMI`, `WaistSize`)
