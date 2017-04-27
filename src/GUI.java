@@ -4,22 +4,24 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 import javax.swing.JPasswordField;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 
 @SuppressWarnings("serial")
 public class GUI extends JFrame implements ActionListener
 {	
 	//Main window, button panel, buttons and timer
-	private JFrame logWindow, mainMenu, signWindow;
-	private JFrame diet, sleep, act, body, submit;
-	private Button log, back, sign, dietB, sleepB, actB, bodyB, submitB, submitUser;
-	private Button dietBack, sleepBack, actBack, bodyBack, submitBack, submitEnter;
+	private JFrame logWindow, mainMenu, signWindow, displayWindow, submit;
+	private Button log, back, sign, dietB, sleepB, actB, bodyB, submitB, submitUser, display;
+	private Button submitBack, submitEnter, displayB;
 	private Button signBack;
 	private JTextField user;
 	private JTextField firstName, middleName, lastName, location, email, user1;
 	private JPasswordField pass, pass1, pass2;
 	private JTextField day, month, year, calorie, unsaturatedFat, saturatedFat, protein, fiber, carbohydrate,
 	quality, hour, weight, height, bodyFatPercentage, bmi, waistSize, duration, caloriesBurned, activity;
+	private JTable data;
+	private JTextField day1, month1, year1;
 
 	public void logWindow()
 	{
@@ -97,7 +99,7 @@ public class GUI extends JFrame implements ActionListener
 		bodyB = new Button("BODY");
 		submitB = new Button("SUBMIT DATA");
 		back = new Button("LOG OUT");
-
+		display = new Button("DISPLAY DATA");
 
 		dietB.addActionListener(this);
 		sleepB.addActionListener(this);
@@ -105,72 +107,21 @@ public class GUI extends JFrame implements ActionListener
 		bodyB.addActionListener(this);
 		submitB.addActionListener(this);
 		back.addActionListener(this);
+		display.addActionListener(this);
+		
+		day1 = new JTextField("DAY");
+		month1 = new JTextField("MONTH");
+		year1 = new JTextField("YEAR");
 
-		mainMenu.add(dietB);
-		mainMenu.add(sleepB);
-		mainMenu.add(actB);
-		mainMenu.add(bodyB);
+		mainMenu.add(day1);
+		mainMenu.add(month1);
+		mainMenu.add(year1);
+		mainMenu.add(display);
 		mainMenu.add(submitB);
 		mainMenu.add(back);
 	}
 
-	public void diet()
-	{
-		//Create diet, sleep, activity, body windows
-		diet = new JFrame("DIET");
-		diet.setSize(600, 600);
-		diet.setLocation(200, 20);
-		diet.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		diet.setLayout(new GridLayout(8, 8));
 
-		//Diet function
-		dietBack = new Button("MAIN MENU");
-		dietBack.addActionListener(this);
-		diet.add(dietBack);
-	}
-
-	public void activity()
-	{
-		//Activity window
-		act = new JFrame("Main Menu");
-		act.setSize(600, 600);
-		act.setLocation(200, 20);
-		act.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		act.setLayout(new GridLayout(8, 8));
-
-		//Act function
-		actBack = new Button("MAIN MENU");
-		actBack.addActionListener(this);
-		act.add(actBack);
-	}
-
-	public void sleep()
-	{
-		sleep = new JFrame("SLEEP");
-		sleep.setSize(600, 600);
-		sleep.setLocation(200, 20);
-		sleep.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		sleep.setLayout(new GridLayout(8, 8));
-
-		//Sleep function
-		sleepBack = new Button("MAIN MENU");
-		sleepBack.addActionListener(this);
-		sleep.add(sleepBack);
-	}
-
-	public void body()
-	{
-		body = new JFrame("Main Menu");
-		body.setSize(600, 600);
-		body.setLocation(200, 20);
-		body.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		body.setLayout(new GridLayout(8, 8));
-
-		//Body function
-		bodyBack = new Button("MAIN MENU");
-		bodyBack.addActionListener(this);
-		body.add(bodyBack);
-	}
 
 	public void submitWindow()
 	{
@@ -234,16 +185,28 @@ public class GUI extends JFrame implements ActionListener
 
 	}
 
+	public void displayWindow()
+	{
+		//display window
+		displayWindow = new JFrame("DISPLAYING DATA");
+		displayWindow.setSize(600, 600);
+		displayWindow.setLocation(200, 20);
+		displayWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		displayWindow.setLayout(new GridLayout(8, 8));
+		
+		displayB = new Button("MAIN MENU");
+		displayB.addActionListener(this);
+		
+		displayWindow.add(displayB);
+	}
+
 	public void makeWindow()
 	{
 		logWindow();
 		signWindow();
 		mainMenu();
-		diet();
-		activity();
-		sleep();
-		body();
 		submitWindow();
+		displayWindow();
 		logWindow.setVisible(true);
 	}
 
@@ -265,51 +228,11 @@ public class GUI extends JFrame implements ActionListener
 			logWindow.setVisible(false);
 			signWindow.setVisible(true);
 		}
-		if (e.getSource() == dietB)
-		{
-			diet.setVisible(true);
-			mainMenu.setVisible(false);
-		}
-		if (e.getSource() == actB)
-		{
-			act.setVisible(true);
-			mainMenu.setVisible(false);
-		}
-		if (e.getSource() == bodyB)
-		{
-			body.setVisible(true);
-			mainMenu.setVisible(false);
-		}
-		if (e.getSource() == sleepB)
-		{
-			sleep.setVisible(true);
-			mainMenu.setVisible(false);
-		}
 		if (e.getSource() == signBack)
 		{
 			logWindow.setVisible(true);
 			signWindow.setVisible(false);
 		}	
-		if (e.getSource() == dietBack)
-		{
-			diet.setVisible(false);
-			mainMenu.setVisible(true);
-		}
-		if (e.getSource() == actBack)
-		{
-			act.setVisible(false);
-			mainMenu.setVisible(true);
-		}
-		if (e.getSource() == bodyBack)
-		{
-			body.setVisible(false);
-			mainMenu.setVisible(true);
-		}
-		if (e.getSource() == sleepBack)
-		{
-			sleep.setVisible(false);
-			mainMenu.setVisible(true);
-		}
 		if (e.getSource() == submitB)
 		{
 			mainMenu.setVisible(false);
@@ -329,6 +252,15 @@ public class GUI extends JFrame implements ActionListener
 			signWindow.setVisible(false);
 			logWindow.setVisible(true);
 		}
-
+		if (e.getSource() == display)
+		{
+			mainMenu.setVisible(false);
+			displayWindow.setVisible(true);
+		}
+		if (e.getSource() == displayB)
+		{
+			displayWindow.setVisible(false);
+			mainMenu.setVisible(true);
+		}
 	}
 }
