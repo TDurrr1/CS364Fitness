@@ -133,39 +133,39 @@ INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Hours`)
 INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Hours`)
 	VALUES (2, '2017-02-12', 2, '23:53:00', '7:51:00');
 INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Hours`)
-	VALUES (3, '2017-02-13', 1, '23:53:00', '7:12:00');
+	VALUES (3, '2017-02-13', 1, 3);
 INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Hours`)
-	VALUES (3, '2017-02-14', 3, '23:21:00', '7:51:00');
+	VALUES (3, '2017-02-14', 3, 2);
 INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Hours`)
-	VALUES (3, '2017-02-15', 7, '23:41:00', '7:17:00');
+	VALUES (3, '2017-02-15', 7, 12);
 INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Hours`)
-	VALUES (3, '2017-02-16', 5, '23:47:00', '7:17:00');
+	VALUES (3, '2017-02-16', 5, 7);
 INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Hours`)
-	VALUES (3, '2017-02-17', 10, '23:21:00', '7:15:00');
+	VALUES (3, '2017-02-17', 10, 9);
 INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Hours`)
-	VALUES (4, '2017-02-18', 4, '23:32:00', '7:23:00');
+	VALUES (4, '2017-02-18', 4, 4);
 INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Hours`)
-	VALUES (4, '2017-02-19', 6, '23:56:00', '7:22:00');
+	VALUES (4, '2017-02-19', 6, 5);
 INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Hours`)
-	VALUES (4, '2017-02-20', 1, '23:11:00', '7:55:00');
+	VALUES (4, '2017-02-20', 1, 6);
 INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Hours`)
-	VALUES (4, '2017-02-21', 7, '23:23:00', '7:23:00');
+	VALUES (4, '2017-02-21', 7, 6);
 INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Hours`)
-	VALUES (4, '2017-02-22', 4, '23:53:00', '7:37:00');
+	VALUES (4, '2017-02-22', 4, 9);
 INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Hours`)
-	VALUES (4, '2017-02-23', 2, '23:18:00', '7:34:00');
+	VALUES (4, '2017-02-23', 2, 11);
 INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Hours`)
-	VALUES (5, '2017-02-24', 4, '22:44:00', '7:33:00');
+	VALUES (5, '2017-02-24', 4, 10);
 INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Hours`)
-	VALUES (4, '2017-02-25', 8, '23:32:00', '7:10:00');
+	VALUES (4, '2017-02-25', 8, 8);
 INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Hours`)
-	VALUES (5, '2017-02-26', 7, '23:04:00', '7:11:00');
+	VALUES (5, '2017-02-26', 7, 7);
 INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Hours`)
-	VALUES (5, '2017-02-27', 6, '23:11:00', '7:44:00');
+	VALUES (5, '2017-02-27', 6, 5);
 INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Hours`)
-	VALUES (5, '2017-02-28', 10, '22:34:00', '7:02:00');
+	VALUES (5, '2017-02-28', 10, 11);
 INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Hours`)
-	VALUES (5, '2017-03-01', 1, '23:00:00', '7:22:00');
+	VALUES (5, '2017-03-01', 1, 3);
 
 INSERT INTO `BodyMeasurements` (`UserId`, `Date`, `Weight`, `Height`, `BodyFatPercentage`, `BMI`, `WaistSize`)
 	VALUES (1, '2017-02-06', 145, 70, 12.21, 20.80, 40);
