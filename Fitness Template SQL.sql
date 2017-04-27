@@ -29,8 +29,8 @@ CREATE TABLE `BodyMeasurements` (
 	`Date`              DATE PRIMARY KEY NOT NULL,
     `Weight`            INT,
     `Height`            INT,
-    `BodyFatPercentage` NUMERIC(2, 2),
-    `BMI`               NUMERIC(2, 2),
+    `BodyFatPercentage` DECIMAL(4, 2),
+    `BMI`               DECIMAL(4, 2),
     `WaistSize`         INT
 );
 
@@ -66,20 +66,27 @@ ALTER TABLE `BodyMeasurements` ADD CONSTRAINT `FK_BodyMeasurementsUserID`
     FOREIGN KEY (`UserID`) REFERENCES `User` (`UserID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 ALTER TABLE `Nutrition` ADD CONSTRAINT `FK_NutritionUserID`
     FOREIGN KEY (`UserID`) REFERENCES `User` (`UserID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-    FOREIGN KEY (`UserID`) REFERENCES `User` (`UserID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- DATA INSERTION
 
 -- INSERTING 7 USERS
 
-INSERT INTO `User` (`Username`, `Password`, `EmailAddress`, `FirstName`,`MiddleName`, `LastName`, `Location`, `Birthdate`) VALUES (N'WYenter', N'secretpassword',N'yenter.william@uwlax.edu',N'Will',N' ', N'Yenter', N'Grafton', DATE '1995-09-05');
-INSERT INTO `User` (`Username`, `Password`, `EmailAddress`, `FirstName`,`MiddleName`, `LastName`, `Location`, `Birthdate`) VALUES (N'User2', N'unicorn3',N'myemail@gmail.com',N'Sally',N' ', N'Smith', N'La Crosse', DATE '1995-01-014');
-INSERT INTO `User` (`Username`, `Password`, `EmailAddress`, `FirstName`,`MiddleName`, `LastName`, `Location`, `Birthdate`) VALUES (N'URFIRED', N'WALL',N'president@whitehouse.gov',N'Donald',N'John', N'Drumpf', N'Washington D.C.', DATE '1946-06-14');
-INSERT INTO `User` (`Username`, `Password`, `EmailAddress`, `FirstName`,`MiddleName`, `LastName`, `Location`, `Birthdate`) VALUES (N'randysavage102', N'password123',N'randysavage102@gmail.com',N'Truman',N'Walter', N'Brown', N'Milwaukee', DATE '1991-08-03');
-INSERT INTO `User` (`Username`, `Password`, `EmailAddress`, `FirstName`,`MiddleName`, `LastName`, `Location`, `Birthdate`) VALUES (N'Austin1', N'kachow',N'drift85@gmail.com',N'Austin',N'Larry', N'Schmidt', N'La Crosse', DATE '1996-07-27');
-INSERT INTO `User` (`Username`, `Password`, `EmailAddress`, `FirstName`,`MiddleName`, `LastName`, `Location`, `Birthdate`) VALUES (N'User1', N'password',N'asdfqweori@gmail.com',N'Jane',N'Rose', N'Smith', N'La Crosse', DATE '1995-09-10');
-INSERT INTO `User` (`Username`, `Password`, `EmailAddress`, `FirstName`,`MiddleName`, `LastName`, `Location`, `Birthdate`) VALUES (N'TDurr', N'1234567890',N'tylerdurr@gmail.com',N'Tyler',N' ', N'Durr', N'Edgar', DATE '1996-10-03');
-INSERT INTO `User` (`Username`, `Password`, `EmailAddress`, `FirstName`,`MiddleName`, `LastName`, `Location`, `Birthdate`) VALUES (N'JoeHimself', N'lemonysnicket13',N'schmoe.joe@uwlax.edu',N'Joe',N' ', N'Schmoe', N'La Crosse', DATE '1987-01-02');
+INSERT INTO `User` (`Username`, `Password`, `EmailAddress`, `FirstName`,`MiddleName`, `LastName`, `Location`, `Birthdate`)
+	VALUES (N'WYenter', N'secretpassword',N'yenter.william@uwlax.edu',N'Will',N' ', N'Yenter', N'Grafton', DATE '1995-09-05');
+INSERT INTO `User` (`Username`, `Password`, `EmailAddress`, `FirstName`,`MiddleName`, `LastName`, `Location`, `Birthdate`)
+	VALUES (N'User2', N'unicorn3',N'myemail@gmail.com',N'Sally',N' ', N'Smith', N'La Crosse', DATE '1995-01-014');
+INSERT INTO `User` (`Username`, `Password`, `EmailAddress`, `FirstName`,`MiddleName`, `LastName`, `Location`, `Birthdate`)
+	VALUES (N'URFIRED', N'WALL',N'president@whitehouse.gov',N'Donald',N'John', N'Drumpf', N'Washington D.C.', DATE '1946-06-14');
+INSERT INTO `User` (`Username`, `Password`, `EmailAddress`, `FirstName`,`MiddleName`, `LastName`, `Location`, `Birthdate`)
+	VALUES (N'randysavage102', N'password123',N'randysavage102@gmail.com',N'Truman',N'Walter', N'Brown', N'Milwaukee', DATE '1991-08-03');
+INSERT INTO `User` (`Username`, `Password`, `EmailAddress`, `FirstName`,`MiddleName`, `LastName`, `Location`, `Birthdate`)
+	VALUES (N'Austin1', N'kachow',N'drift85@gmail.com',N'Austin',N'Larry', N'Schmidt', N'La Crosse', DATE '1996-07-27');
+INSERT INTO `User` (`Username`, `Password`, `EmailAddress`, `FirstName`,`MiddleName`, `LastName`, `Location`, `Birthdate`)
+	VALUES (N'User1', N'password',N'asdfqweori@gmail.com',N'Jane',N'Rose', N'Smith', N'La Crosse', DATE '1995-09-10');
+INSERT INTO `User` (`Username`, `Password`, `EmailAddress`, `FirstName`,`MiddleName`, `LastName`, `Location`, `Birthdate`)
+	VALUES (N'TDurr', N'1234567890',N'tylerdurr@gmail.com',N'Tyler',N' ', N'Durr', N'Edgar', DATE '1996-10-03');
+INSERT INTO `User` (`Username`, `Password`, `EmailAddress`, `FirstName`,`MiddleName`, `LastName`, `Location`, `Birthdate`)
+	VALUES (N'JoeHimself', N'lemonysnicket13',N'schmoe.joe@uwlax.edu',N'Joe',N' ', N'Schmoe', N'La Crosse', DATE '1987-01-02');
 
 -- Nutrition table data
 
@@ -112,52 +119,100 @@ INSERT INTO `Nutrition` (`UserID`, `Date`, `CalorieIntake`, `UnsaturatedFat`, `S
 INSERT INTO `Nutrition` (`UserID`, `Date`, `CalorieIntake`, `UnsaturatedFat`, `SaturatedFat`, `Protein`, `Fiber`, `Carbohydrate`)
 	VALUES (7, '2017-04-12', 2392, 52, 15, 75, 29, 296);
 
-INSERT INTO `Sleep` (`Date`, `Quality`, `Bedtime`, `WakeTime`) VALUES ('2017-02-06', 4, '23:00:00', '7:23:00');
-INSERT INTO `Sleep` (`Date`, `Quality`, `Bedtime`, `WakeTime`) VALUES ('2017-02-07', 5, '23:40:00', '7:44:00');
-INSERT INTO `Sleep` (`Date`, `Quality`, `Bedtime`, `WakeTime`) VALUES ('2017-02-08', 6, '22:10:00', '7:11:00');
-INSERT INTO `Sleep` (`Date`, `Quality`, `Bedtime`, `WakeTime`) VALUES ('2017-02-09', 5, '23:39:00', '7:40:00');
-INSERT INTO `Sleep` (`Date`, `Quality`, `Bedtime`, `WakeTime`) VALUES ('2017-02-10', 9, '23:23:00', '7:12:00');
-INSERT INTO `Sleep` (`Date`, `Quality`, `Bedtime`, `WakeTime`) VALUES ('2017-02-11', 10, '23:43:00', '7:33:00');
-INSERT INTO `Sleep` (`Date`, `Quality`, `Bedtime`, `WakeTime`) VALUES ('2017-02-12', 2, '23:53:00', '7:51:00');
-INSERT INTO `Sleep` (`Date`, `Quality`, `Bedtime`, `WakeTime`) VALUES ('2017-02-13', 1, '23:53:00', '7:12:00');
-INSERT INTO `Sleep` (`Date`, `Quality`, `Bedtime`, `WakeTime`) VALUES ('2017-02-14', 3, '23:21:00', '7:51:00');
-INSERT INTO `Sleep` (`Date`, `Quality`, `Bedtime`, `WakeTime`) VALUES ('2017-02-15', 7, '23:41:00', '7:17:00');
-INSERT INTO `Sleep` (`Date`, `Quality`, `Bedtime`, `WakeTime`) VALUES ('2017-02-16', 5, '23:47:00', '7:17:00');
-INSERT INTO `Sleep` (`Date`, `Quality`, `Bedtime`, `WakeTime`) VALUES ('2017-02-17', 10, '23:21:00', '7:15:00');
-INSERT INTO `Sleep` (`Date`, `Quality`, `Bedtime`, `WakeTime`) VALUES ('2017-02-18', 4, '23:32:00', '7:23:00');
-INSERT INTO `Sleep` (`Date`, `Quality`, `Bedtime`, `WakeTime`) VALUES ('2017-02-19', 6, '23:56:00', '7:22:00');
-INSERT INTO `Sleep` (`Date`, `Quality`, `Bedtime`, `WakeTime`) VALUES ('2017-02-20', 1, '23:11:00', '7:55:00');
-INSERT INTO `Sleep` (`Date`, `Quality`, `Bedtime`, `WakeTime`) VALUES ('2017-02-21', 7, '23:23:00', '7:23:00');
-INSERT INTO `Sleep` (`Date`, `Quality`, `Bedtime`, `WakeTime`) VALUES ('2017-02-22', 4, '23:53:00', '7:37:00');
-INSERT INTO `Sleep` (`Date`, `Quality`, `Bedtime`, `WakeTime`) VALUES ('2017-02-23', 2, '23:18:00', '7:34:00');
-INSERT INTO `Sleep` (`Date`, `Quality`, `Bedtime`, `WakeTime`) VALUES ('2017-02-24', 4, '22:44:00', '7:33:00');
-INSERT INTO `Sleep` (`Date`, `Quality`, `Bedtime`, `WakeTime`) VALUES ('2017-02-25', 8, '23:32:00', '7:10:00');
-INSERT INTO `Sleep` (`Date`, `Quality`, `Bedtime`, `WakeTime`) VALUES ('2017-02-26', 7, '23:04:00', '7:11:00');
-INSERT INTO `Sleep` (`Date`, `Quality`, `Bedtime`, `WakeTime`) VALUES ('2017-02-27', 6, '23:11:00', '7:44:00');
-INSERT INTO `Sleep` (`Date`, `Quality`, `Bedtime`, `WakeTime`) VALUES ('2017-02-28', 10, '22:34:00', '7:02:00');
-INSERT INTO `Sleep` (`Date`, `Quality`, `Bedtime`, `WakeTime`) VALUES ('2017-03-01', 1, '23:00:00', '7:22:00');
+INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Bedtime`, `WakeTime`)
+	VALUES (1, '2017-02-06', 4, '23:00:00', '7:23:00');
+INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Bedtime`, `WakeTime`)
+	VALUES (1, '2017-02-07', 5, '23:40:00', '7:44:00');
+INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Bedtime`, `WakeTime`)
+	VALUES (1, '2017-02-08', 6, '22:10:00', '7:11:00');
+INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Bedtime`, `WakeTime`)
+	VALUES (2, '2017-02-09', 5, '23:39:00', '7:40:00');
+INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Bedtime`, `WakeTime`)
+	VALUES (2, '2017-02-10', 9, '23:23:00', '7:12:00');
+INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Bedtime`, `WakeTime`)
+	VALUES (2, '2017-02-11', 10, '23:43:00', '7:33:00');
+INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Bedtime`, `WakeTime`)
+	VALUES (2, '2017-02-12', 2, '23:53:00', '7:51:00');
+INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Bedtime`, `WakeTime`)
+	VALUES (3, '2017-02-13', 1, '23:53:00', '7:12:00');
+INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Bedtime`, `WakeTime`)
+	VALUES (3, '2017-02-14', 3, '23:21:00', '7:51:00');
+INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Bedtime`, `WakeTime`)
+	VALUES (3, '2017-02-15', 7, '23:41:00', '7:17:00');
+INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Bedtime`, `WakeTime`)
+	VALUES (3, '2017-02-16', 5, '23:47:00', '7:17:00');
+INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Bedtime`, `WakeTime`)
+	VALUES (3, '2017-02-17', 10, '23:21:00', '7:15:00');
+INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Bedtime`, `WakeTime`)
+	VALUES (4, '2017-02-18', 4, '23:32:00', '7:23:00');
+INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Bedtime`, `WakeTime`)
+	VALUES (4, '2017-02-19', 6, '23:56:00', '7:22:00');
+INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Bedtime`, `WakeTime`)
+	VALUES (4, '2017-02-20', 1, '23:11:00', '7:55:00');
+INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Bedtime`, `WakeTime`)
+	VALUES (4, '2017-02-21', 7, '23:23:00', '7:23:00');
+INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Bedtime`, `WakeTime`)
+	VALUES (4, '2017-02-22', 4, '23:53:00', '7:37:00');
+INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Bedtime`, `WakeTime`)
+	VALUES (4, '2017-02-23', 2, '23:18:00', '7:34:00');
+INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Bedtime`, `WakeTime`)
+	VALUES (5, '2017-02-24', 4, '22:44:00', '7:33:00');
+INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Bedtime`, `WakeTime`)
+	VALUES (4, '2017-02-25', 8, '23:32:00', '7:10:00');
+INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Bedtime`, `WakeTime`)
+	VALUES (5, '2017-02-26', 7, '23:04:00', '7:11:00');
+INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Bedtime`, `WakeTime`)
+	VALUES (5, '2017-02-27', 6, '23:11:00', '7:44:00');
+INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Bedtime`, `WakeTime`)
+	VALUES (5, '2017-02-28', 10, '22:34:00', '7:02:00');
+INSERT INTO `Sleep` (`UserId`, `Date`, `Quality`, `Bedtime`, `WakeTime`)
+	VALUES (5, '2017-03-01', 1, '23:00:00', '7:22:00');
 
-INSERT INTO `BodyMeasurements` (`Date`, `Weight`, `Height`, `BodyFatPercentage`, `BMI`, `WaistSize`) VALUES ('2017-02-06', 145, 70, 12.21, 20.80, 40);
-INSERT INTO `BodyMeasurements` (`Date`, `Weight`, `Height`, `BodyFatPercentage`, `BMI`, `WaistSize`) VALUES ('2017-02-07', 145, 70, 12.11, 20.80, 40);
-INSERT INTO `BodyMeasurements` (`Date`, `Weight`, `Height`, `BodyFatPercentage`, `BMI`, `WaistSize`) VALUES ('2017-02-08', 145, 70, 12.13, 20.80, 40);
-INSERT INTO `BodyMeasurements` (`Date`, `Weight`, `Height`, `BodyFatPercentage`, `BMI`, `WaistSize`) VALUES ('2017-02-09', 145, 70, 12.23, 20.80, 40);
-INSERT INTO `BodyMeasurements` (`Date`, `Weight`, `Height`, `BodyFatPercentage`, `BMI`, `WaistSize`) VALUES ('2017-02-10', 145, 70, 12.48, 20.80, 40);
-INSERT INTO `BodyMeasurements` (`Date`, `Weight`, `Height`, `BodyFatPercentage`, `BMI`, `WaistSize`) VALUES ('2017-02-11', 145, 70, 12.56, 20.80, 40);
-INSERT INTO `BodyMeasurements` (`Date`, `Weight`, `Height`, `BodyFatPercentage`, `BMI`, `WaistSize`) VALUES ('2017-02-12', 145, 70, 12.10, 20.80, 40);
-INSERT INTO `BodyMeasurements` (`Date`, `Weight`, `Height`, `BodyFatPercentage`, `BMI`, `WaistSize`) VALUES ('2017-02-13', 145, 70, 12.09, 20.80, 40);
-INSERT INTO `BodyMeasurements` (`Date`, `Weight`, `Height`, `BodyFatPercentage`, `BMI`, `WaistSize`) VALUES ('2017-02-14', 145, 70, 12.12, 20.80, 40);
-INSERT INTO `BodyMeasurements` (`Date`, `Weight`, `Height`, `BodyFatPercentage`, `BMI`, `WaistSize`) VALUES ('2017-02-15', 145, 70, 12.14, 20.80, 40);
-INSERT INTO `BodyMeasurements` (`Date`, `Weight`, `Height`, `BodyFatPercentage`, `BMI`, `WaistSize`) VALUES ('2017-02-16', 146, 70, 12.54, 20.83, 40);
-INSERT INTO `BodyMeasurements` (`Date`, `Weight`, `Height`, `BodyFatPercentage`, `BMI`, `WaistSize`) VALUES ('2017-02-17', 147, 70, 12.14, 20.85, 40);
-INSERT INTO `BodyMeasurements` (`Date`, `Weight`, `Height`, `BodyFatPercentage`, `BMI`, `WaistSize`) VALUES ('2017-02-18', 148, 70, 12.19, 20.85, 40);
-INSERT INTO `BodyMeasurements` (`Date`, `Weight`, `Height`, `BodyFatPercentage`, `BMI`, `WaistSize`) VALUES ('2017-02-19', 148, 70, 12.45, 20.85, 40);
-INSERT INTO `BodyMeasurements` (`Date`, `Weight`, `Height`, `BodyFatPercentage`, `BMI`, `WaistSize`) VALUES ('2017-02-20', 148, 70, 12.10, 20.85, 40);
-INSERT INTO `BodyMeasurements` (`Date`, `Weight`, `Height`, `BodyFatPercentage`, `BMI`, `WaistSize`) VALUES ('2017-02-21', 148, 70, 12.40, 20.85, 40);
-INSERT INTO `BodyMeasurements` (`Date`, `Weight`, `Height`, `BodyFatPercentage`, `BMI`, `WaistSize`) VALUES ('2017-02-22', 147, 70, 12.11, 20.83, 40);
-INSERT INTO `BodyMeasurements` (`Date`, `Weight`, `Height`, `BodyFatPercentage`, `BMI`, `WaistSize`) VALUES ('2017-02-23', 147, 70, 12.78, 20.83, 40);
-INSERT INTO `BodyMeasurements` (`Date`, `Weight`, `Height`, `BodyFatPercentage`, `BMI`, `WaistSize`) VALUES ('2017-02-24', 147, 70, 12.10, 20.83, 40);
-INSERT INTO `BodyMeasurements` (`Date`, `Weight`, `Height`, `BodyFatPercentage`, `BMI`, `WaistSize`) VALUES ('2017-02-25', 146, 70, 12.43, 20.84, 40);
-INSERT INTO `BodyMeasurements` (`Date`, `Weight`, `Height`, `BodyFatPercentage`, `BMI`, `WaistSize`) VALUES ('2017-02-26', 147, 70, 12.10, 20.83, 40);
-INSERT INTO `BodyMeasurements` (`Date`, `Weight`, `Height`, `BodyFatPercentage`, `BMI`, `WaistSize`) VALUES ('2017-02-27', 146, 70, 12.90, 20.84, 40);
-INSERT INTO `BodyMeasurements` (`Date`, `Weight`, `Height`, `BodyFatPercentage`, `BMI`, `WaistSize`) VALUES ('2017-02-28', 145, 70, 12.87, 20.80, 40);
-INSERT INTO `BodyMeasurements` (`Date`, `Weight`, `Height`, `BodyFatPercentage`, `BMI`, `WaistSize`) VALUES ('2017-03-01', 145, 70, 12.74, 20.80, 40);
+INSERT INTO `BodyMeasurements` (`UserId`, `Date`, `Weight`, `Height`, `BodyFatPercentage`, `BMI`, `WaistSize`)
+	VALUES (1, '2017-02-06', 145, 70, 12.21, 20.80, 40);
+INSERT INTO `BodyMeasurements` (`UserId`, `Date`, `Weight`, `Height`, `BodyFatPercentage`, `BMI`, `WaistSize`)
+	VALUES (1, '2017-02-07', 145, 70, 12.11, 20.80, 40);
+INSERT INTO `BodyMeasurements` (`UserId`, `Date`, `Weight`, `Height`, `BodyFatPercentage`, `BMI`, `WaistSize`)
+	VALUES (1, '2017-02-08', 145, 70, 12.13, 20.80, 40);
+INSERT INTO `BodyMeasurements` (`UserId`, `Date`, `Weight`, `Height`, `BodyFatPercentage`, `BMI`, `WaistSize`)
+	VALUES (2, '2017-02-09', 145, 70, 12.23, 20.80, 40);
+INSERT INTO `BodyMeasurements` (`UserId`, `Date`, `Weight`, `Height`, `BodyFatPercentage`, `BMI`, `WaistSize`)
+	VALUES (2, '2017-02-10', 145, 70, 12.48, 20.80, 40);
+INSERT INTO `BodyMeasurements` (`UserId`, `Date`, `Weight`, `Height`, `BodyFatPercentage`, `BMI`, `WaistSize`)
+	VALUES (2, '2017-02-11', 145, 70, 12.56, 20.80, 40);
+INSERT INTO `BodyMeasurements` (`UserId`, `Date`, `Weight`, `Height`, `BodyFatPercentage`, `BMI`, `WaistSize`)
+	VALUES (2, '2017-02-12', 145, 70, 12.10, 20.80, 40);
+INSERT INTO `BodyMeasurements` (`UserId`, `Date`, `Weight`, `Height`, `BodyFatPercentage`, `BMI`, `WaistSize`)
+	VALUES (3, '2017-02-13', 145, 70, 12.09, 20.80, 40);
+INSERT INTO `BodyMeasurements` (`UserId`, `Date`, `Weight`, `Height`, `BodyFatPercentage`, `BMI`, `WaistSize`)
+	VALUES (3, '2017-02-14', 145, 70, 12.12, 20.80, 40);
+INSERT INTO `BodyMeasurements` (`UserId`, `Date`, `Weight`, `Height`, `BodyFatPercentage`, `BMI`, `WaistSize`)
+	VALUES (3, '2017-02-15', 145, 70, 12.14, 20.80, 40);
+INSERT INTO `BodyMeasurements` (`UserId`, `Date`, `Weight`, `Height`, `BodyFatPercentage`, `BMI`, `WaistSize`)
+	VALUES (3, '2017-02-16', 146, 70, 12.54, 20.83, 40);
+INSERT INTO `BodyMeasurements` (`UserId`, `Date`, `Weight`, `Height`, `BodyFatPercentage`, `BMI`, `WaistSize`)
+	VALUES (3, '2017-02-17', 147, 70, 12.14, 20.85, 40);
+INSERT INTO `BodyMeasurements` (`UserId`, `Date`, `Weight`, `Height`, `BodyFatPercentage`, `BMI`, `WaistSize`)
+	VALUES (4, '2017-02-18', 148, 70, 12.19, 20.85, 40);
+INSERT INTO `BodyMeasurements` (`UserId`, `Date`, `Weight`, `Height`, `BodyFatPercentage`, `BMI`, `WaistSize`)
+	VALUES (4, '2017-02-19', 148, 70, 12.45, 20.85, 40);
+INSERT INTO `BodyMeasurements` (`UserId`, `Date`, `Weight`, `Height`, `BodyFatPercentage`, `BMI`, `WaistSize`)
+	VALUES (4, '2017-02-20', 148, 70, 12.10, 20.85, 40);
+INSERT INTO `BodyMeasurements` (`UserId`, `Date`, `Weight`, `Height`, `BodyFatPercentage`, `BMI`, `WaistSize`)
+	VALUES (4, '2017-02-21', 148, 70, 12.40, 20.85, 40);
+INSERT INTO `BodyMeasurements` (`UserId`, `Date`, `Weight`, `Height`, `BodyFatPercentage`, `BMI`, `WaistSize`)
+	VALUES (4, '2017-02-22', 147, 70, 12.11, 20.83, 40);
+INSERT INTO `BodyMeasurements` (`UserId`, `Date`, `Weight`, `Height`, `BodyFatPercentage`, `BMI`, `WaistSize`)
+	VALUES (4, '2017-02-23', 147, 70, 12.78, 20.83, 40);
+INSERT INTO `BodyMeasurements` (`UserId`, `Date`, `Weight`, `Height`, `BodyFatPercentage`, `BMI`, `WaistSize`)
+	VALUES (5, '2017-02-24', 147, 70, 12.10, 20.83, 40);
+INSERT INTO `BodyMeasurements` (`UserId`, `Date`, `Weight`, `Height`, `BodyFatPercentage`, `BMI`, `WaistSize`)
+	VALUES (4, '2017-02-25', 146, 70, 12.43, 20.84, 40);
+INSERT INTO `BodyMeasurements` (`UserId`, `Date`, `Weight`, `Height`, `BodyFatPercentage`, `BMI`, `WaistSize`)
+	VALUES (5, '2017-02-26', 147, 70, 12.10, 20.83, 40);
+INSERT INTO `BodyMeasurements` (`UserId`, `Date`, `Weight`, `Height`, `BodyFatPercentage`, `BMI`, `WaistSize`)
+	VALUES (5, '2017-02-27', 146, 70, 12.90, 20.84, 40);
+INSERT INTO `BodyMeasurements` (`UserId`, `Date`, `Weight`, `Height`, `BodyFatPercentage`, `BMI`, `WaistSize`)
+	VALUES (5, '2017-02-28', 145, 70, 12.87, 20.80, 40);
+INSERT INTO `BodyMeasurements` (`UserId`, `Date`, `Weight`, `Height`, `BodyFatPercentage`, `BMI`, `WaistSize`)
+	VALUES (5, '2017-03-01', 145, 70, 12.74, 20.80, 40);
