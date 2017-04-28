@@ -21,7 +21,7 @@ public class GUI extends JFrame implements ActionListener
 	
 	//Main window, button panel, buttons and timer
 	private JFrame logWindow, mainMenu, signWindow, displayWindow, submit;
-	private Button log, back, sign, dietB, sleepB, actB, bodyB, submitB, submitUser, display;
+	private Button log, back, sign, submitB, submitUser, display;
 	private Button submitBack, submitEnter, displayB;
 	private Button signBack;
 	private JTextField user;
@@ -103,18 +103,10 @@ public class GUI extends JFrame implements ActionListener
 		mainMenu.setLayout(new GridLayout(8, 8));
 
 		//All buttons we need
-		dietB = new Button("DIET");
-		sleepB = new Button("SLEEP");
-		actB = new Button("ACTIVITY");
-		bodyB = new Button("BODY");
 		submitB = new Button("SUBMIT DATA");
 		back = new Button("LOG OUT");
 		display = new Button("DISPLAY DATA");
 
-		dietB.addActionListener(this);
-		sleepB.addActionListener(this);
-		actB.addActionListener(this);
-		bodyB.addActionListener(this);
 		submitB.addActionListener(this);
 		back.addActionListener(this);
 		display.addActionListener(this);
