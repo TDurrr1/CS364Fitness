@@ -216,4 +216,8 @@ INSERT INTO `BodyMeasurements` (`UserId`, `Date`, `Weight`, `Height`, `BodyFatPe
 INSERT INTO `BodyMeasurements` (`UserId`, `Date`, `Weight`, `Height`, `BodyFatPercentage`, `BMI`, `WaistSize`)
 	VALUES (5, '2017-03-01', 145, 70, 12.74, 20.80, 40);
     
-INSERT INTO `Activity` (`UserId`, `Date`, `Duration`, `CaloriesBurned`, `Name`) VALUES (1, '2017-03-01', 30, 350, 'Running') 
+INSERT INTO `Activity` (`UserId`, `Date`, `Duration`, `CaloriesBurned`, `Name`) VALUES (1, '2017-03-01', 30, 350, 'Running');
+INSERT INTO `Activity` (`UserId`, `Date`, `Duration`, `CaloriesBurned`, `Name`) VALUES (2, '2017-02-25', 30, 300, 'Biking'); 
+INSERT INTO `Activity` (`UserId`, `Date`, `Duration`, `CaloriesBurned`, `Name`) VALUES (3, '2017-04-25', 120, 1000, 'Tennis'); 
+INSERT INTO `Activity` (`UserId`, `Date`, `Duration`, `CaloriesBurned`, `Name`) VALUES (4, '2017-04-06', 60, 300, 'Skateboarding');
+INSERT INTO `Activity` (`UserId`, `Date`, `Duration`, `CaloriesBurned`, `Name`) VALUES (5, '2017-03-28', 30, 400, 'Running'); 
