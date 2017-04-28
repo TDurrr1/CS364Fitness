@@ -2,25 +2,21 @@ import java.awt.Button;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
-import javax.swing.JTable;
 import javax.swing.JTextField;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+
 @SuppressWarnings("serial")
-public class GUI extends JFrame implements ActionListener {	
-	
-	/*** Class constants ***/
-	
-	public static final String DEFAULT_CONNECTION_URL = "jdbc:mysql://localhost/FitnessBuddy?user=example&password=password";
-	
-	/*** Class variables ***/
-	
+public class GUI extends JFrame implements ActionListener
+{	
+	public static final String DEFAULT_CONNECTION_URL = 
+			"jdbc:mysql://localhost/FitnessBuddy?user=example&password=password";
 	private Connection database = null;
 	
 	//Main window, button panel, buttons and timer
@@ -33,9 +29,9 @@ public class GUI extends JFrame implements ActionListener {
 	private JPasswordField pass, pass1, pass2;
 	private JTextField day, month, year, calorie, unsaturatedFat, saturatedFat, protein, fiber, carbohydrate,
 	quality, hour, weight, height, bodyFatPercentage, bmi, waistSize, duration, caloriesBurned, activity;
-	private JTable data;
+	private JTextField calorie1, unsaturatedFat1, saturatedFat1, protein1, fiber1, carbohydrate1,
+	quality1, hour1, weight1, height1, bodyFatPercentage1, bmi1, waistSize1, duration1, caloriesBurned1, activity1;
 	private JTextField day1, month1, year1;
-	
 
 	public void logWindow()
 	{
@@ -208,6 +204,42 @@ public class GUI extends JFrame implements ActionListener {
 		displayWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		displayWindow.setLayout(new GridLayout(8, 8));
 		
+		calorie1 = new JTextField("Calories Intake: ", 20);
+		unsaturatedFat1 = new JTextField("Unsaturated Fat: ", 20);
+		saturatedFat1 = new JTextField("Saturated Fat: ", 20);
+		protein1 = new JTextField("Protein: ", 20);
+		fiber1 = new JTextField("Fiber: ", 20);
+		carbohydrate1 = new JTextField("Carbohydrate: ", 20);
+		quality1  = new JTextField("Quality: ", 2);
+		hour1  = new JTextField("Hours: ", 20);	
+		weight1 = new JTextField("Weight: ", 2);
+		height1 = new JTextField("Height: ", 2);
+		bodyFatPercentage1 = new JTextField("Body Fat Percentage: ", 2);
+		bmi1 = new JTextField("BMI: ", 20);
+		waistSize1 = new JTextField("Waist Size: ", 20);
+		duration1 = new JTextField("Duration: ", 20);
+		caloriesBurned1 = new JTextField("Calories Burned: ", 20);
+		activity1 = new JTextField("Name of Activity: ", 20);
+		
+		displayWindow.add(calorie1);
+		displayWindow.add(unsaturatedFat1);
+		displayWindow.add(saturatedFat1);
+		displayWindow.add(protein1);
+		displayWindow.add(protein1);
+		displayWindow.add(fiber1);
+		displayWindow.add(carbohydrate1);
+		displayWindow.add(quality1);
+		displayWindow.add(hour1);
+		displayWindow.add(weight1);
+		displayWindow.add(height1);
+		displayWindow.add(bodyFatPercentage1);
+		displayWindow.add(bmi1);
+		displayWindow.add(waistSize1);
+		displayWindow.add(duration1);
+		displayWindow.add(caloriesBurned1);
+		displayWindow.add(activity1);
+		
+		
 		displayB = new Button("MAIN MENU");
 		displayB.addActionListener(this);
 		
@@ -292,7 +324,8 @@ public class GUI extends JFrame implements ActionListener {
 		}
 	}
 	
-	private boolean submitData() throws SQLException {
+	private boolean submitData() throws SQLException 
+	{
 		
 		boolean successfulSubmit = false;
 		String activityInsert = "INSERT INTO Shopping (Item, Quantity) VALUES (?, ?)";
