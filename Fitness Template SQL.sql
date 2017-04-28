@@ -215,3 +215,5 @@ INSERT INTO `BodyMeasurements` (`UserId`, `Date`, `Weight`, `Height`, `BodyFatPe
 	VALUES (5, '2017-02-28', 145, 70, 12.87, 20.80, 40);
 INSERT INTO `BodyMeasurements` (`UserId`, `Date`, `Weight`, `Height`, `BodyFatPercentage`, `BMI`, `WaistSize`)
 	VALUES (5, '2017-03-01', 145, 70, 12.74, 20.80, 40);
+    
+INSERT INTO `Activity` (`UserId`, `Date`, `Duration`, `CaloriesBurned`, `Name`) VALUES (1, '2017-03-01', 30, 350, 'Running') 
