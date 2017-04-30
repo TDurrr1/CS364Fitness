@@ -52,9 +52,6 @@ CREATE TABLE `Nutrition` (
     `Carbohydrate`   INT
 );
 
--- Sample INSERT statement
--- INSERT INTO `User` (`Username`, `Password`, `EmailAddress`, `FirstName`,`MiddleName`, `LastName`) VALUES ('abc', '123', '@gmail', 'A', 'B', 'c');
-
 -- Add in foreign key relationships
 
 ALTER TABLE `Sleep` ADD CONSTRAINT `FK_SleepUserID`
@@ -232,3 +229,7 @@ INSERT INTO `Activity` (`UserId`, `Date`, `ActivityDuration`, `CaloriesBurned`, 
 	VALUES (4, '2017-04-06', 60, 300, 'Skateboarding');
 INSERT INTO `Activity` (`UserId`, `Date`, `ActivityDuration`, `CaloriesBurned`, `ActivityName`)
 	VALUES (5, '2017-03-28', 30, 400, 'Running');
+INSERT INTO `Activity` (`UserId`, `Date`, `ActivityDuration`, `CaloriesBurned`, `ActivityName`)
+	VALUES (1, '2017-03-28', 30, 400, 'Running');
+INSERT INTO `Activity` (`UserId`, `Date`, `ActivityDuration`, `CaloriesBurned`, `ActivityName`)
+	VALUES (6, '2017-03-28', 15, 270, 'Running');
