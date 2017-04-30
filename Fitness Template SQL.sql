@@ -49,7 +49,7 @@ CREATE TABLE `Nutrition` (
     `SaturatedFat`   INT,
     `Protein`        INT,
     `Fiber`          INT,
-    `Carbohydrate`   INT
+    `Carbohydrates`   INT
 );
 
 -- Add in foreign key relationships
@@ -86,33 +86,33 @@ INSERT INTO `User` (`Username`, `Password`, `EmailAddress`, `FirstName`,`MiddleN
 
 -- Nutrition table data
 
-INSERT INTO `Nutrition` (`UserID`, `Date`, `CaloricIntake`, `UnsaturatedFat`, `SaturatedFat`, `Protein`, `Fiber`, `Carbohydrate`)
+INSERT INTO `Nutrition` (`UserID`, `Date`, `CaloricIntake`, `UnsaturatedFat`, `SaturatedFat`, `Protein`, `Fiber`, `Carbohydrates`)
 	VALUES (2, '2016-12-31', 2251, 50, 22, 70, 22, 273);
-INSERT INTO `Nutrition` (`UserID`, `Date`, `CaloricIntake`, `UnsaturatedFat`, `SaturatedFat`, `Protein`, `Fiber`, `Carbohydrate`)
+INSERT INTO `Nutrition` (`UserID`, `Date`, `CaloricIntake`, `UnsaturatedFat`, `SaturatedFat`, `Protein`, `Fiber`, `Carbohydrates`)
 	VALUES (2, '2016-02-29', 1931, 52, 20, 59, 30, 266);
-INSERT INTO `Nutrition` (`UserID`, `Date`, `CaloricIntake`, `UnsaturatedFat`, `SaturatedFat`, `Protein`, `Fiber`, `Carbohydrate`)
+INSERT INTO `Nutrition` (`UserID`, `Date`, `CaloricIntake`, `UnsaturatedFat`, `SaturatedFat`, `Protein`, `Fiber`, `Carbohydrates`)
 	VALUES (3, '2016-01-01', 1542, 53, 24, 48, 20, 293);
-INSERT INTO `Nutrition` (`UserID`, `Date`, `CaloricIntake`, `UnsaturatedFat`, `SaturatedFat`, `Protein`, `Fiber`, `Carbohydrate`)
+INSERT INTO `Nutrition` (`UserID`, `Date`, `CaloricIntake`, `UnsaturatedFat`, `SaturatedFat`, `Protein`, `Fiber`, `Carbohydrates`)
 	VALUES (4, '2017-02-12', 1558, 43, 21, 56, 23, 251);
-INSERT INTO `Nutrition` (`UserID`, `Date`, `CaloricIntake`, `UnsaturatedFat`, `SaturatedFat`, `Protein`, `Fiber`, `Carbohydrate`)
+INSERT INTO `Nutrition` (`UserID`, `Date`, `CaloricIntake`, `UnsaturatedFat`, `SaturatedFat`, `Protein`, `Fiber`, `Carbohydrates`)
 	VALUES (4, '2017-04-03', 1986, 57, 18, 48, 25, 253);
-INSERT INTO `Nutrition` (`UserID`, `Date`, `CaloricIntake`, `UnsaturatedFat`, `SaturatedFat`, `Protein`, `Fiber`, `Carbohydrate`)
+INSERT INTO `Nutrition` (`UserID`, `Date`, `CaloricIntake`, `UnsaturatedFat`, `SaturatedFat`, `Protein`, `Fiber`, `Carbohydrates`)
 	VALUES (4, '2017-04-04', 1689, 53, 21, 52, 26, 267);
-INSERT INTO `Nutrition` (`UserID`, `Date`, `CaloricIntake`, `UnsaturatedFat`, `SaturatedFat`, `Protein`, `Fiber`, `Carbohydrate`)
+INSERT INTO `Nutrition` (`UserID`, `Date`, `CaloricIntake`, `UnsaturatedFat`, `SaturatedFat`, `Protein`, `Fiber`, `Carbohydrates`)
 	VALUES (5, '2017-04-05', 2431, 60, 24, 56, 30, 321);
-INSERT INTO `Nutrition` (`UserID`, `Date`, `CaloricIntake`, `UnsaturatedFat`, `SaturatedFat`, `Protein`, `Fiber`, `Carbohydrate`)
+INSERT INTO `Nutrition` (`UserID`, `Date`, `CaloricIntake`, `UnsaturatedFat`, `SaturatedFat`, `Protein`, `Fiber`, `Carbohydrates`)
 	VALUES (5, '2017-04-06', 1722, 52, 18, 48, 29, 264);
-INSERT INTO `Nutrition` (`UserID`, `Date`, `CaloricIntake`, `UnsaturatedFat`, `SaturatedFat`, `Protein`, `Fiber`, `Carbohydrate`)
+INSERT INTO `Nutrition` (`UserID`, `Date`, `CaloricIntake`, `UnsaturatedFat`, `SaturatedFat`, `Protein`, `Fiber`, `Carbohydrates`)
 	VALUES (5, '2017-04-07', 2330, 42, 21, 74, 27, 292);
-INSERT INTO `Nutrition` (`UserID`, `Date`, `CaloricIntake`, `UnsaturatedFat`, `SaturatedFat`, `Protein`, `Fiber`, `Carbohydrate`)
+INSERT INTO `Nutrition` (`UserID`, `Date`, `CaloricIntake`, `UnsaturatedFat`, `SaturatedFat`, `Protein`, `Fiber`, `Carbohydrates`)
 	VALUES (5, '2017-04-08', 2446, 41, 24, 68, 30, 253);
-INSERT INTO `Nutrition` (`UserID`, `Date`, `CaloricIntake`, `UnsaturatedFat`, `SaturatedFat`, `Protein`, `Fiber`, `Carbohydrate`)
+INSERT INTO `Nutrition` (`UserID`, `Date`, `CaloricIntake`, `UnsaturatedFat`, `SaturatedFat`, `Protein`, `Fiber`, `Carbohydrates`)
 	VALUES (6, '2017-04-09', 2073, 49, 15, 50, 23, 289);
-INSERT INTO `Nutrition` (`UserID`, `Date`, `CaloricIntake`, `UnsaturatedFat`, `SaturatedFat`, `Protein`, `Fiber`, `Carbohydrate`)
+INSERT INTO `Nutrition` (`UserID`, `Date`, `CaloricIntake`, `UnsaturatedFat`, `SaturatedFat`, `Protein`, `Fiber`, `Carbohydrates`)
 	VALUES (6, '2017-04-10', 2346, 41, 25, 74, 26, 285);
-INSERT INTO `Nutrition` (`UserID`, `Date`, `CaloricIntake`, `UnsaturatedFat`, `SaturatedFat`, `Protein`, `Fiber`, `Carbohydrate`)
+INSERT INTO `Nutrition` (`UserID`, `Date`, `CaloricIntake`, `UnsaturatedFat`, `SaturatedFat`, `Protein`, `Fiber`, `Carbohydrates`)
 	VALUES (7, '2017-04-11', 2473, 47, 24, 41, 25, 280);
-INSERT INTO `Nutrition` (`UserID`, `Date`, `CaloricIntake`, `UnsaturatedFat`, `SaturatedFat`, `Protein`, `Fiber`, `Carbohydrate`)
+INSERT INTO `Nutrition` (`UserID`, `Date`, `CaloricIntake`, `UnsaturatedFat`, `SaturatedFat`, `Protein`, `Fiber`, `Carbohydrates`)
 	VALUES (7, '2017-04-12', 2392, 52, 15, 75, 29, 296);
 
 -- Sleep table data
