@@ -17,15 +17,17 @@ CREATE TABLE `User` (
 );
 
 CREATE TABLE `Sleep` (
+	`SleepID`      INT  PRIMARY KEY NOT NULL AUTO_INCREMENT,
 	`UserID`       INT  NOT NULL,
-	`Date`         DATE PRIMARY KEY NOT NULL,
+	`Date`         DATE NOT NULL,
     `SleepQuality` INT,
     `SleepLength`  INT
 );
 
 CREATE TABLE `BodyMeasurements` (
-	`UserID`             INT  NOT NULL,
-	`Date`               DATE PRIMARY KEY NOT NULL,
+	`BodyMeasurementsID` INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+	`UserID`             INT NOT NULL,
+	`Date`               INT NOT NULL,
     `Weight`             INT,
     `Height`             INT,
     `BodyFatPercentage`  DECIMAL(4, 2),
@@ -34,22 +36,24 @@ CREATE TABLE `BodyMeasurements` (
 );
 
 CREATE TABLE `Activity` (
+	`ActivityID`       INT  PRIMARY KEY NOT NULL AUTO_INCREMENT,
 	`UserID`           INT  NOT NULL,
-	`Date`             DATE PRIMARY KEY NOT NULL,
+	`Date`             DATE NOT NULL,
     `ActivityName`     NVARCHAR(24),
     `ActivityDuration` INT,
     `CaloriesBurned`   INT
 );
 
 CREATE TABLE `Nutrition` (
+	`NutritionID`    INT  PRIMARY KEY NOT NULL AUTO_INCREMENT,
 	`UserID`         INT  NOT NULL,
-	`Date`           DATE PRIMARY KEY NOT NULL,
+	`Date`           DATE NOT NULL,
     `CaloricIntake`  INT,
     `UnsaturatedFat` INT,
     `SaturatedFat`   INT,
     `Protein`        INT,
     `Fiber`          INT,
-    `Carbohydrates`   INT
+    `Carbohydrates`  INT
 );
 
 -- Add in foreign key relationships
