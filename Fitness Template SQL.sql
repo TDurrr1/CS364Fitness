@@ -25,9 +25,9 @@ CREATE TABLE `Sleep` (
 );
 
 CREATE TABLE `BodyMeasurements` (
-	`BodyMeasurementsID` INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-	`UserID`             INT NOT NULL,
-	`Date`               INT NOT NULL,
+	`BodyMeasurementsID` INT  PRIMARY KEY NOT NULL AUTO_INCREMENT,
+	`UserID`             INT  NOT NULL,
+	`Date`               DATE NOT NULL,
     `Weight`             INT,
     `Height`             INT,
     `BodyFatPercentage`  DECIMAL(4, 2),
