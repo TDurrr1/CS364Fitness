@@ -1,13 +1,11 @@
 import java.awt.Button;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.sql.SQLException;
-import java.util.Calendar;
 import java.util.Date;
 
 import javax.swing.JComponent;
@@ -19,8 +17,6 @@ import javax.swing.JSeparator;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerDateModel;
-
-import com.sun.xml.internal.ws.api.Component;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
