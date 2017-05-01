@@ -415,6 +415,7 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 		}
 		if (e.getSource() == display)
 		{
+			displayAll();
 			mainMenu.setVisible(false);
 			displayWindow.setVisible(true);
 		}
@@ -515,7 +516,7 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 			// add the UserID and Date to the attributes
 			
 			attributeNames.append("UserID, Date");	
-			attributeValues.append("1, ?");
+			attributeValues.append("\""+ FitnessBuddy.getUserIDInDB(database, user.getText()) + "\", ?");
 			
 			// validate input
 			
@@ -528,7 +529,12 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 				
 				if (input.length() > 0) {
 					attributeNames.append(", " + this.getAttributeName(table, attribute));
-					attributeValues.append(", " + input);
+					if (FIELD_UNITS[table][attribute] == null)
+					{
+						attributeValues.append(", \"" + input + "\"");
+					}
+					else
+						attributeValues.append(", " + input);
 					valuesWereEntered = true;
 				}
 			}
@@ -652,7 +658,7 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 		
 	}
 	
-	public boolean valueIsInRange(double input, double maximum, double minimum) {
+	public boolean valueIsInRange(double input, double minimum, double maximum) {
 		
 		boolean isInRange = false;
 		
@@ -760,7 +766,9 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 
 
 			resultSet = query.executeQuery();
-
+			activity1.setText("Name of Activity: ");
+			duration1.setText("Duration: ");
+			caloriesBurned1.setText("Calories Burned: ");
 			if (resultSet.next()) 
 			{
 				activity1.setText(activity1.getText() + resultSet.getString(4));
