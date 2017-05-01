@@ -346,8 +346,19 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 	{
 		if (e.getSource() == log)
 		{
-			logWindow.setVisible(false);
-			mainMenu.setVisible(true);
+			if (!(f.isItemInDB(database, user.getText())))
+			{
+				displayError("We cannot find your username");
+			}
+			else if (f.isItemInDB(database, user.getText()) && !f.getPasswordInDB(database, user.getText()).equals(pass.getText()))
+			{
+				displayError("Wrong password");
+			}
+			else if (f.isItemInDB(database, user.getText()) && f.getPasswordInDB(database, user.getText()).equals(pass.getText()))
+			{
+				logWindow.setVisible(false);
+				mainMenu.setVisible(true);
+			}
 		}
 		if (e.getSource() == back)
 		{
