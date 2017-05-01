@@ -53,6 +53,33 @@ String queryStr = "SELECT * FROM User WHERE Username = ?";
 		return "";
 	}
 	
+	public static String getUserIDInDB(Connection connect, String item) 
+	{
+		String queryStr = "SELECT * FROM User WHERE Username = ?";
+
+		ResultSet resultSet = null;
+
+		PreparedStatement query;
+		try {
+			query = connect.prepareStatement(queryStr);
+			query.setString(1, item);
+
+			resultSet = query.executeQuery();
+
+			if (resultSet.next()) 
+			{
+				return resultSet.getString(1);
+			}
+
+		} catch (SQLException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return "";
+	}
+	
 	public static boolean isItemInDB(Connection connect, String item) 
 	{
 		String queryStr = "SELECT * FROM User WHERE Username = ?";
