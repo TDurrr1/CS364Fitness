@@ -184,7 +184,7 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 		submitB.addActionListener(this);
 		back.addActionListener(this);
 		display.addActionListener(this);
-		
+
 		day1 = new JTextField("DAY");
 		month1 = new JTextField("MONTH");
 		year1 = new JTextField("YEAR");
@@ -356,16 +356,17 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 	{
 		if (e.getSource() == log)
 		{
-			if ((FitnessBuddy.isItemInDB(database, user.getText())))
+			if (!(FitnessBuddy.isItemInDB(database, user.getText())))
 			{
 				displayError("We cannot find your username");
 			}
-			else if (!FitnessBuddy.isItemInDB(database, user.getText()) && FitnessBuddy.getPasswordInDB(database, user.getText()).equals(pass.getText()))
+			else if (FitnessBuddy.isItemInDB(database, user.getText()) && !FitnessBuddy.getPasswordInDB(database, user.getText()).equals(pass.getText()))
 			{
 				displayError("Wrong password");
 			}
-			else if (!FitnessBuddy.isItemInDB(database, user.getText()) && !FitnessBuddy.getPasswordInDB(database, user.getText()).equals(pass.getText()))
+			else if (FitnessBuddy.isItemInDB(database, user.getText()) && FitnessBuddy.getPasswordInDB(database, user.getText()).equals(pass.getText()))
 			{
+				pass.setText(null);
 				logWindow.setVisible(false);
 				mainMenu.setVisible(true);
 			}
