@@ -31,7 +31,6 @@ CREATE TABLE `BodyMeasurements` (
     `Weight`             INT,
     `Height`             INT,
     `BodyFatPercentage`  INT,
-    `BodyMassIndex`      INT,
     `WaistCircumference` INT
 );
 
@@ -55,6 +54,9 @@ CREATE TABLE `Nutrition` (
     `Fiber`          INT,
     `Carbohydrates`  INT
 );
+
+-- Sample INSERT statement
+-- INSERT INTO `User` (`Username`, `Password`, `EmailAddress`, `FirstName`,`MiddleName`, `LastName`) VALUES ('abc', '123', '@gmail', 'A', 'B', 'c');
 
 -- Add in foreign key relationships
 
@@ -84,7 +86,7 @@ INSERT INTO `User` (`Username`, `Password`, `EmailAddress`, `FirstName`,`MiddleN
 INSERT INTO `User` (`Username`, `Password`, `EmailAddress`, `FirstName`,`MiddleName`, `LastName`, `Location`, `Birthdate`)
 	VALUES ('User1', 'password', 'asdfqweori@gmail.com', 'Jane', 'Rose', 'Smith', 'La Crosse', DATE '1995-09-10');
 INSERT INTO `User` (`Username`, `Password`, `EmailAddress`, `FirstName`,`MiddleName`, `LastName`, `Location`, `Birthdate`)
-	VALUES ('TDurr', '1234567890', 'tylerdurr@gmail.com', 'Tyler', ' ', 'Durr', 'Edgar', DATE '1996-10-03');
+	VALUES ('TDurr', '1234567890', 'tylerdurr@gmail.com', 'Tyler', '', 'Durr', 'Edgar', DATE '1996-10-03');
 INSERT INTO `User` (`Username`, `Password`, `EmailAddress`, `FirstName`,`MiddleName`, `LastName`, `Location`, `Birthdate`)
 	VALUES ('JoeHimself', 'lemonysnicket13', 'schmoe.joe@uwlax.edu', 'Joe', ' ', 'Schmoe', 'La Crosse', DATE '1987-01-02');
 
@@ -172,54 +174,54 @@ INSERT INTO `Sleep` (`UserId`, `Date`, `SleepQuality`, `SleepLength`)
 
 -- Body measurement data
 
-INSERT INTO `BodyMeasurements` (`UserId`, `Date`, `Weight`, `Height`, `BodyFatPercentage`, `BodyMassIndex`, `WaistCircumference`)
-	VALUES (1, '2017-02-06', 145, 70, 12.21, 20.80, 40);
-INSERT INTO `BodyMeasurements` (`UserId`, `Date`, `Weight`, `Height`, `BodyFatPercentage`, `BodyMassIndex`, `WaistCircumference`)
-	VALUES (1, '2017-02-07', 145, 70, 12.11, 20.80, 40);
-INSERT INTO `BodyMeasurements` (`UserId`, `Date`, `Weight`, `Height`, `BodyFatPercentage`, `BodyMassIndex`, `WaistCircumference`)
-	VALUES (1, '2017-02-08', 145, 70, 12.13, 20.80, 40);
-INSERT INTO `BodyMeasurements` (`UserId`, `Date`, `Weight`, `Height`, `BodyFatPercentage`, `BodyMassIndex`, `WaistCircumference`)
-	VALUES (2, '2017-02-09', 145, 70, 12.23, 20.80, 40);
-INSERT INTO `BodyMeasurements` (`UserId`, `Date`, `Weight`, `Height`, `BodyFatPercentage`, `BodyMassIndex`, `WaistCircumference`)
-	VALUES (2, '2017-02-10', 145, 70, 12.48, 20.80, 40);
-INSERT INTO `BodyMeasurements` (`UserId`, `Date`, `Weight`, `Height`, `BodyFatPercentage`, `BodyMassIndex`, `WaistCircumference`)
-	VALUES (2, '2017-02-11', 145, 70, 12.56, 20.80, 40);
-INSERT INTO `BodyMeasurements` (`UserId`, `Date`, `Weight`, `Height`, `BodyFatPercentage`, `BodyMassIndex`, `WaistCircumference`)
-	VALUES (2, '2017-02-12', 145, 70, 12.10, 20.80, 40);
-INSERT INTO `BodyMeasurements` (`UserId`, `Date`, `Weight`, `Height`, `BodyFatPercentage`, `BodyMassIndex`, `WaistCircumference`)
-	VALUES (3, '2017-02-13', 145, 70, 12.09, 20.80, 40);
-INSERT INTO `BodyMeasurements` (`UserId`, `Date`, `Weight`, `Height`, `BodyFatPercentage`, `BodyMassIndex`, `WaistCircumference`)
-	VALUES (3, '2017-02-14', 145, 70, 12.12, 20.80, 40);
-INSERT INTO `BodyMeasurements` (`UserId`, `Date`, `Weight`, `Height`, `BodyFatPercentage`, `BodyMassIndex`, `WaistCircumference`)
-	VALUES (3, '2017-02-15', 145, 70, 12.14, 20.80, 40);
-INSERT INTO `BodyMeasurements` (`UserId`, `Date`, `Weight`, `Height`, `BodyFatPercentage`, `BodyMassIndex`, `WaistCircumference`)
-	VALUES (3, '2017-02-16', 146, 70, 12.54, 20.83, 40);
-INSERT INTO `BodyMeasurements` (`UserId`, `Date`, `Weight`, `Height`, `BodyFatPercentage`, `BodyMassIndex`, `WaistCircumference`)
-	VALUES (3, '2017-02-17', 147, 70, 12.14, 20.85, 40);
-INSERT INTO `BodyMeasurements` (`UserId`, `Date`, `Weight`, `Height`, `BodyFatPercentage`, `BodyMassIndex`, `WaistCircumference`)
-	VALUES (4, '2017-02-18', 148, 70, 12.19, 20.85, 40);
-INSERT INTO `BodyMeasurements` (`UserId`, `Date`, `Weight`, `Height`, `BodyFatPercentage`, `BodyMassIndex`, `WaistCircumference`)
-	VALUES (4, '2017-02-19', 148, 70, 12.45, 20.85, 40);
-INSERT INTO `BodyMeasurements` (`UserId`, `Date`, `Weight`, `Height`, `BodyFatPercentage`, `BodyMassIndex`, `WaistCircumference`)
-	VALUES (4, '2017-02-20', 148, 70, 12.10, 20.85, 40);
-INSERT INTO `BodyMeasurements` (`UserId`, `Date`, `Weight`, `Height`, `BodyFatPercentage`, `BodyMassIndex`, `WaistCircumference`)
-	VALUES (4, '2017-02-21', 148, 70, 12.40, 20.85, 40);
-INSERT INTO `BodyMeasurements` (`UserId`, `Date`, `Weight`, `Height`, `BodyFatPercentage`, `BodyMassIndex`, `WaistCircumference`)
-	VALUES (4, '2017-02-22', 147, 70, 12.11, 20.83, 40);
-INSERT INTO `BodyMeasurements` (`UserId`, `Date`, `Weight`, `Height`, `BodyFatPercentage`, `BodyMassIndex`, `WaistCircumference`)
-	VALUES (4, '2017-02-23', 147, 70, 12.78, 20.83, 40);
-INSERT INTO `BodyMeasurements` (`UserId`, `Date`, `Weight`, `Height`, `BodyFatPercentage`, `BodyMassIndex`, `WaistCircumference`)
-	VALUES (5, '2017-02-24', 147, 70, 12.10, 20.83, 40);
-INSERT INTO `BodyMeasurements` (`UserId`, `Date`, `Weight`, `Height`, `BodyFatPercentage`, `BodyMassIndex`, `WaistCircumference`)
-	VALUES (4, '2017-02-25', 146, 70, 12.43, 20.84, 40);
-INSERT INTO `BodyMeasurements` (`UserId`, `Date`, `Weight`, `Height`, `BodyFatPercentage`, `BodyMassIndex`, `WaistCircumference`)
-	VALUES (5, '2017-02-26', 147, 70, 12.10, 20.83, 40);
-INSERT INTO `BodyMeasurements` (`UserId`, `Date`, `Weight`, `Height`, `BodyFatPercentage`, `BodyMassIndex`, `WaistCircumference`)
-	VALUES (5, '2017-02-27', 146, 70, 12.90, 20.84, 40);
-INSERT INTO `BodyMeasurements` (`UserId`, `Date`, `Weight`, `Height`, `BodyFatPercentage`, `BodyMassIndex`, `WaistCircumference`)
-	VALUES (5, '2017-02-28', 145, 70, 12.87, 20.80, 40);
-INSERT INTO `BodyMeasurements` (`UserId`, `Date`, `Weight`, `Height`, `BodyFatPercentage`, `BodyMassIndex`, `WaistCircumference`)
-	VALUES (5, '2017-03-01', 145, 70, 12.74, 20.80, 40);
+INSERT INTO `BodyMeasurements` (`UserId`, `Date`, `Weight`, `Height`, `BodyFatPercentage`, `WaistCircumference`)
+	VALUES (1, '2017-02-06', 145, 70, 12.21, 40);
+INSERT INTO `BodyMeasurements` (`UserId`, `Date`, `Weight`, `Height`, `BodyFatPercentage`, `WaistCircumference`)
+	VALUES (1, '2017-02-07', 145, 70, 12.11, 40);
+INSERT INTO `BodyMeasurements` (`UserId`, `Date`, `Weight`, `Height`, `BodyFatPercentage`, `WaistCircumference`)
+	VALUES (1, '2017-02-08', 145, 70, 12.13, 40);
+INSERT INTO `BodyMeasurements` (`UserId`, `Date`, `Weight`, `Height`, `BodyFatPercentage`, `WaistCircumference`)
+	VALUES (2, '2017-02-09', 145, 70, 12.23, 40);
+INSERT INTO `BodyMeasurements` (`UserId`, `Date`, `Weight`, `Height`, `BodyFatPercentage`, `WaistCircumference`)
+	VALUES (2, '2017-02-10', 145, 70, 12.48, 40);
+INSERT INTO `BodyMeasurements` (`UserId`, `Date`, `Weight`, `Height`, `BodyFatPercentage`, `WaistCircumference`)
+	VALUES (2, '2017-02-11', 145, 70, 12.56, 40);
+INSERT INTO `BodyMeasurements` (`UserId`, `Date`, `Weight`, `Height`, `BodyFatPercentage`, `WaistCircumference`)
+	VALUES (2, '2017-02-12', 145, 70, 12.10, 40);
+INSERT INTO `BodyMeasurements` (`UserId`, `Date`, `Weight`, `Height`, `BodyFatPercentage`, `WaistCircumference`)
+	VALUES (3, '2017-02-13', 145, 70, 12.09, 40);
+INSERT INTO `BodyMeasurements` (`UserId`, `Date`, `Weight`, `Height`, `BodyFatPercentage`, `WaistCircumference`)
+	VALUES (3, '2017-02-14', 145, 70, 12.12, 40);
+INSERT INTO `BodyMeasurements` (`UserId`, `Date`, `Weight`, `Height`, `BodyFatPercentage`, `WaistCircumference`)
+	VALUES (3, '2017-02-15', 145, 70, 12.14, 40);
+INSERT INTO `BodyMeasurements` (`UserId`, `Date`, `Weight`, `Height`, `BodyFatPercentage`, `WaistCircumference`)
+	VALUES (3, '2017-02-16', 146, 70, 12.54, 40);
+INSERT INTO `BodyMeasurements` (`UserId`, `Date`, `Weight`, `Height`, `BodyFatPercentage`, `WaistCircumference`)
+	VALUES (3, '2017-02-17', 147, 70, 12.14, 40);
+INSERT INTO `BodyMeasurements` (`UserId`, `Date`, `Weight`, `Height`, `BodyFatPercentage`, `WaistCircumference`)
+	VALUES (4, '2017-02-18', 148, 70, 12.19, 40);
+INSERT INTO `BodyMeasurements` (`UserId`, `Date`, `Weight`, `Height`, `BodyFatPercentage`, `WaistCircumference`)
+	VALUES (4, '2017-02-19', 148, 70, 12.45, 40);
+INSERT INTO `BodyMeasurements` (`UserId`, `Date`, `Weight`, `Height`, `BodyFatPercentage`, `WaistCircumference`)
+	VALUES (4, '2017-02-20', 148, 70, 12.10, 40);
+INSERT INTO `BodyMeasurements` (`UserId`, `Date`, `Weight`, `Height`, `BodyFatPercentage`, `WaistCircumference`)
+	VALUES (4, '2017-02-21', 148, 70, 12.40, 40);
+INSERT INTO `BodyMeasurements` (`UserId`, `Date`, `Weight`, `Height`, `BodyFatPercentage`, `WaistCircumference`)
+	VALUES (4, '2017-02-22', 147, 70, 12.11, 40);
+INSERT INTO `BodyMeasurements` (`UserId`, `Date`, `Weight`, `Height`, `BodyFatPercentage`, `WaistCircumference`)
+	VALUES (4, '2017-02-23', 147, 70, 12.78, 40);
+INSERT INTO `BodyMeasurements` (`UserId`, `Date`, `Weight`, `Height`, `BodyFatPercentage`, `WaistCircumference`)
+	VALUES (5, '2017-02-24', 147, 70, 12.10, 40);
+INSERT INTO `BodyMeasurements` (`UserId`, `Date`, `Weight`, `Height`, `BodyFatPercentage`, `WaistCircumference`)
+	VALUES (4, '2017-02-25', 146, 70, 12.43, 40);
+INSERT INTO `BodyMeasurements` (`UserId`, `Date`, `Weight`, `Height`, `BodyFatPercentage`, `WaistCircumference`)
+	VALUES (5, '2017-02-26', 147, 70, 12.10, 40);
+INSERT INTO `BodyMeasurements` (`UserId`, `Date`, `Weight`, `Height`, `BodyFatPercentage`, `WaistCircumference`)
+	VALUES (5, '2017-02-27', 146, 70, 12.90, 40);
+INSERT INTO `BodyMeasurements` (`UserId`, `Date`, `Weight`, `Height`, `BodyFatPercentage`, `WaistCircumference`)
+	VALUES (5, '2017-02-28', 145, 70, 12.87, 40);
+INSERT INTO `BodyMeasurements` (`UserId`, `Date`, `Weight`, `Height`, `BodyFatPercentage`, `WaistCircumference`)
+	VALUES (5, '2017-03-01', 145, 70, 12.74, 40);
   
 -- Activity data
 
@@ -233,7 +235,3 @@ INSERT INTO `Activity` (`UserId`, `Date`, `ActivityDuration`, `CaloriesBurned`, 
 	VALUES (4, '2017-04-06', 60, 300, 'Skateboarding');
 INSERT INTO `Activity` (`UserId`, `Date`, `ActivityDuration`, `CaloriesBurned`, `ActivityName`)
 	VALUES (5, '2017-03-28', 30, 400, 'Running');
-INSERT INTO `Activity` (`UserId`, `Date`, `ActivityDuration`, `CaloriesBurned`, `ActivityName`)
-	VALUES (1, '2017-03-28', 30, 400, 'Running');
-INSERT INTO `Activity` (`UserId`, `Date`, `ActivityDuration`, `CaloriesBurned`, `ActivityName`)
-	VALUES (6, '2017-03-28', 15, 270, 'Running');
