@@ -681,7 +681,8 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 
 
 			resultSet = query.executeQuery();
-
+			quality1.setText("Quality: ");
+			hour1.setText("Hours: ");
 			if (resultSet.next()) 
 			{
 				quality1.setText(quality1.getText() + resultSet.getString(4));
@@ -702,7 +703,13 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 
 
 			resultSet = query.executeQuery();
-
+			calorie1.setText("Calorie Intake: ");
+			unsaturatedFat1.setText("Unsaturated Fat: ");
+			saturatedFat1.setText("Saturated Fat: ");
+			protein1.setText("Protein: ");
+			fiber1.setText("Fiber: ");
+			carbohydrate1.setText("Carbohydrate: ");
+			
 			if (resultSet.next()) 
 			{
 				calorie1.setText(calorie1.getText() + resultSet.getString(4));
@@ -726,7 +733,11 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 
 
 			resultSet = query.executeQuery();
-
+			weight1.setText("Weight: ");
+			height1.setText("Height: ");
+			bodyFatPercentage1.setText("Body Fat Percentage: ");
+			bmi1.setText("BMI: ");
+			waistSize1.setText("Waist Size: ");
 			if (resultSet.next()) 
 			{
 				weight1.setText(weight1.getText() + resultSet.getString(4));
