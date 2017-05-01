@@ -29,7 +29,7 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 	public static final String DEFAULT_CONNECTION_URL = "jdbc:mysql://localhost/FitnessBuddy?user=example&password=password";
 	
 	/*
-	 * These constants are meant for easily accessing the information contained in the three-dimensional array below.
+	 * These constants are meant for easily accessing the information contained in the two-dimensional arrays below.
 	 */
 	// Dimension one: Data type
 	public static final int NAME = 0;
@@ -41,9 +41,6 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 	public static final int BODYMEASUREMENTS = 1;
 	public static final int NUTRITION = 2;
 	public static final int SLEEP = 3;
-	
-	// Dimension three: Field
-	// (has no constants because the data stored differs from table to table)
 	
     /* The way these arrays are set up is as follows.
      *      - In each 2D array, there is one 1D array corresponding each of the alphabetically-ordered database tables:
@@ -81,6 +78,7 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 			{3,  3,  2,  3,  3    },
 			{5,  3,  3,  3,  3,  3},
 			{2,  2                }};
+	private final String TABLE_NAMES[] = {"Activity", "BodyMeasurements", "Nutrition", "Sleep"};
 	
 	/*** Class variables ***/
 	
@@ -242,12 +240,12 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 		submit.add(new JLabel());
 		submit.add(new JLabel("Date: ", JTextField.RIGHT));
 		submit.add(date);
-		for (int table = 0; table < submissionLabels.length; table++) {
+		for (int table = 0; table < submissionFields.length; table++) {
 			submit.add(new JLabel());
 			submit.add(new JLabel());
 			submit.add(new JSeparator(JSeparator.HORIZONTAL));
 			submit.add(new JSeparator(JSeparator.HORIZONTAL));
-			for (int attribute = 0; attribute < submissionLabels[table].length; attribute++) {
+			for (int attribute = 0; attribute < submissionFields[table].length; attribute++) {
 				submit.add(submissionLabels[table][attribute]);
 				submit.add(submissionFields[table][attribute]);
 			}
@@ -306,7 +304,6 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 		displayWindow.add(caloriesBurned1);
 		displayWindow.add(activity1);
 		
-		
 		displayB = new Button("MAIN MENU");
 		displayB.addActionListener(this);
 		
@@ -315,7 +312,7 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 
 	public void makeWindow()
 	{
-		Connection database = FitnessBuddy.connect(GUI.DEFAULT_CONNECTION_URL);
+		database = FitnessBuddy.connect(GUI.DEFAULT_CONNECTION_URL);
 		
 		logWindow();
 		signWindow();
@@ -380,17 +377,13 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 		if (e.getSource() == submitEnter)
 		{
 			try {
-				if (this.submitData()) {
-					this.displaySuccess("Data successfully submitted.");
-					submit.setVisible(false);
-					mainMenu.setVisible(true);
-				}
-				else {
-					this.displayError("Data entry error", "Data not submitted. Check the submission window for errors.");
-				}
+				this.submitData();
+				this.displaySuccess("Data successfully submitted.");
+				submit.setVisible(false);
+				mainMenu.setVisible(true);
 			}
 			catch (Exception ex) {
-				this.displayError("Error caught!", "Error in submitData:\n" + ex.toString());
+				this.displayError("Data entry error", "Data not submitted. " + ex.toString());
 			}
 		}
 		if (e.getSource() == submitUser)
@@ -431,7 +424,6 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 		
 		if (table < submissionFields.length) {
 			this.clearError(submissionFields[table][attribute]);
-			//this.displayPopup(false, "Yo.", "Focus was just gained by a submission field.");
 		}
 		
 	}
@@ -478,34 +470,63 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 		
 	}
 	
-	private boolean submitData() throws SQLException {
+	private void submitData() throws SQLException {
 		
-		boolean successfulSubmit = false;
-		
-		// validate each box
-		
-		
-		
-		// create the insert statements
-		
-		
-		
-		String activityInsert = "INSERT INTO Activity (Item, Quantity) VALUES (?, ?)";
-		String sleepInsert = "INSERT INTO Sleep (Item, Quantity) VALUES (?, ?)";
-		String bodyMeasurementsInsert = "INSERT INTO BodyMeasurements (Item, Quantity) VALUES (?, ?)";
-		String nutritionInsert = "INSERT INTO Nutrition (Item, Quantity) VALUES (?, ?)";
+		for (int table = 0; table < submissionFields.length; table++) {
+			
+			// instantiate
+			
+			PreparedStatement statement = null;
+			StringBuilder insertStatement = new StringBuilder("INSERT INTO " + TABLE_NAMES[table] + " (");
+			StringBuilder attributeNames = new StringBuilder();
+			StringBuilder attributeValues = new StringBuilder();
+			
+			// add the UserID and Date to the attributes
+			
+			attributeNames.append("UserID, Date");	
+			attributeValues.append("1, ?");
+			
+			// add any attributes which were input into the insert statements
+			
+			for (int attribute = 0; attribute < submissionFields[table].length; attribute++) {
+				String input = submissionFields[table][attribute].getText();
+				if (input.length() > 0) {
+					attributeNames.append(", " + this.getAttributeName(table, attribute));
+					attributeValues.append(", " + input);
+				}
+			}
+			
+			// create the full statement
 
-		PreparedStatement activityStatement = database.prepareStatement(activityInsert);
-		PreparedStatement sleepStatement = database.prepareStatement(sleepInsert);
-		PreparedStatement bodyMeasurementsStatement = database.prepareStatement(bodyMeasurementsInsert);
-		PreparedStatement nutritionStatement = database.prepareStatement(nutritionInsert);
-
-		activityStatement.executeUpdate();
-		sleepStatement.executeUpdate();
-		bodyMeasurementsStatement.executeUpdate();
-		nutritionStatement.executeUpdate();
+			insertStatement.append(attributeNames);
+			insertStatement.append(") VALUES (");
+			insertStatement.append(attributeValues);
+			insertStatement.append(");");
+			
+			// turn it into a prepared statement
+			
+			statement = database.prepareStatement(insertStatement.toString());
+			statement.setDate(1, new java.sql.Date(System.currentTimeMillis()));
+			
+			// execute statement
+			
+			statement.executeUpdate();
+			
+		}
 		
-		return successfulSubmit;
+	}
+	
+	private String getAttributeName(int table, int attribute) {
+		
+		StringBuilder attributeName = new StringBuilder();
+		String attributeWords[] = FIELD_NAMES[table][attribute].split(" ");
+		
+		// Capitalize the first letter of each word
+		for (String word : attributeWords) {
+			attributeName.append(word.substring(0, 1) + word.substring(1));
+		}
+		
+		return attributeName.toString();
 		
 	}
 	
