@@ -404,6 +404,7 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 		}
 		if (e.getSource() == display)
 		{
+			displayAll();
 			mainMenu.setVisible(false);
 			displayWindow.setVisible(true);
 		}
@@ -568,6 +569,105 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 	private void displayPopup(boolean isError, String title, String message) {
 		
 		JOptionPane.showMessageDialog(null, message, title, (isError ? JOptionPane.ERROR_MESSAGE : JOptionPane.INFORMATION_MESSAGE));
+		
+	}
+	private void displayAll()
+	{
+		FitnessBuddy f = new FitnessBuddy();
+		int userID = Integer.parseInt(f.getUserIDInDB(database, user.getText()));
+		String date = year1.getText() + "-" + month1.getText() + "-" + day1.getText();
+		String queryStr = "SELECT * FROM Sleep WHERE UserID = ? AND `Date` = ?";
+		ResultSet resultSet = null;
+
+		PreparedStatement query;
+		try {
+			query = database.prepareStatement(queryStr);
+			query.setInt(1, userID);
+			query.setDate(2,new java.sql.Date(new SimpleDateFormat("yyyy-MM-dd").parse(date).getTime()));
+
+
+			resultSet = query.executeQuery();
+
+			if (resultSet.next()) 
+			{
+				quality1.setText(quality1.getText() + resultSet.getString(4));
+				hour1.setText(hour1.getText() + resultSet.getString(5));
+			}
+
+		} catch (SQLException | ParseException e1)
+		{
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		queryStr = "SELECT * FROM Nutrition  WHERE UserID = ? AND `Date` = ?";
+		try {
+			query = database.prepareStatement(queryStr);
+			query.setInt(1, userID);
+			query.setDate(2,new java.sql.Date(new SimpleDateFormat("yyyy-MM-dd").parse(date).getTime()));
+
+
+			resultSet = query.executeQuery();
+
+			if (resultSet.next()) 
+			{
+				calorie1.setText(calorie1.getText() + resultSet.getString(4));
+				unsaturatedFat1.setText(unsaturatedFat1.getText() + resultSet.getString(5));
+				saturatedFat1.setText(saturatedFat1.getText() + resultSet.getString(6));
+				protein1.setText(protein1.getText() + resultSet.getString(7));
+				fiber1.setText(fiber1.getText() + resultSet.getString(8));
+				carbohydrate1.setText(carbohydrate1.getText() + resultSet.getString(9));
+			}
+
+		} catch (SQLException | ParseException e1)
+		{
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		queryStr = "SELECT * FROM BodyMeasurements  WHERE UserID = ? AND `Date` = ?";
+		try {
+			query = database.prepareStatement(queryStr);
+			query.setInt(1, userID);
+			query.setDate(2,new java.sql.Date(new SimpleDateFormat("yyyy-MM-dd").parse(date).getTime()));
+
+
+			resultSet = query.executeQuery();
+
+			if (resultSet.next()) 
+			{
+				weight1.setText(weight1.getText() + resultSet.getString(4));
+				height1.setText(height1.getText() + resultSet.getString(5));
+				bodyFatPercentage1.setText(bodyFatPercentage1.getText() + resultSet.getString(6));
+				bmi1.setText(bmi1.getText() + resultSet.getString(7));
+				waistSize1.setText(waistSize1.getText() + resultSet.getString(8));
+			}
+
+		} catch (SQLException | ParseException e1)
+		{
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		queryStr = "SELECT * FROM Activity  WHERE UserID = ? AND `Date` = ?";
+		try {
+			query = database.prepareStatement(queryStr);
+			query.setInt(1, userID);
+			query.setDate(2,new java.sql.Date(new SimpleDateFormat("yyyy-MM-dd").parse(date).getTime()));
+
+
+			resultSet = query.executeQuery();
+
+			if (resultSet.next()) 
+			{
+				activity1.setText(activity1.getText() + resultSet.getString(4));
+				duration1.setText(duration1.getText() + resultSet.getString(5));
+				caloriesBurned1.setText(caloriesBurned1.getText() + resultSet.getString(6));
+			}
+
+		} catch (SQLException | ParseException e1)
+		{
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		
 	}
 }
