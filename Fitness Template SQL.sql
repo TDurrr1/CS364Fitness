@@ -30,8 +30,8 @@ CREATE TABLE `BodyMeasurements` (
 	`Date`               DATE NOT NULL,
     `Weight`             INT,
     `Height`             INT,
-    `BodyFatPercentage`  DECIMAL(4, 2),
-    `BodyMassIndex`      DECIMAL(4, 2),
+    `BodyFatPercentage`  INT,
+    `BodyMassIndex`      INT,
     `WaistCircumference` INT
 );
 
