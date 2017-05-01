@@ -5,7 +5,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -18,7 +17,6 @@ import javax.swing.JSeparator;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerDateModel;
-import javax.swing.event.ChangeListener;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -75,17 +73,17 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 	 */
 	private final String FIELD_NAMES[][] = {
 			{"Activity name", "Activity duration", "Calories burned"},
-			{"Weight", "Height", "Body fat percentage", "Body mass index", "Waist circumference"},
+			{"Weight", "Height", "Body fat percentage", "Waist circumference"},
 			{"Caloric intake", "Unsaturated fat", "Saturated fat", "Protein", "Fiber", "Carbohydrates"},
 			{"Sleep quality", "Sleep length"}};
 	private final String FIELD_UNITS[][] = {
 			{null, "minutes", "kilocalories"},
-			{"pounds", "inches", "%", "kg/cm\u00b2", "inches"},
+			{"pounds", "inches", "%", "inches"},
 			{"kilocalories", "grams", "grams", "grams", "grams", "grams"},
 			{"1-10", "hours"}};
 	private final int FIELD_LIMITS[][][] = {
-			{{0, 50},   {1, 600},  {1, 1000}},
-			{{25, 999}, {36, 108}, {2, 50}, {10, 99}, {15, 99}},
+			{{-1, 50},   {1, 600},  {1, 1000}},
+			{{25, 999}, {36, 108}, {2, 50}, {15, 99}},
 			{{1, 9999}, {0, 310},  {0, 80}, {0, 280}, {0, 150}, {0, 1625}},
 			{{1, 10},   {0, 24}}};
 	private final String TABLE_NAMES[] = {"Activity", "BodyMeasurements", "Nutrition", "Sleep"};
@@ -95,7 +93,7 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 	private Connection database = null;
 	
 	//Main window, button panel, buttons and timer
-	private JFrame logWindow, mainMenu, signWindow, displayWindow, submit;
+	private JFrame logWindow, mainMenu, signWindow, displayWindow, submitWindow;
 	private Button log, back, sign, submitB, submitUser, display;
 	private Button submitBack, submitEnter, displayB;
 	private Button signBack;
@@ -103,10 +101,12 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 	private JTextField firstName, middleName, lastName, location, email, user1;
 	private JPasswordField pass, pass1, pass2;
 	private JSpinner date;
+	private JLabel displayFields[][] = new JLabel[FIELD_NAMES.length][];
+	private JLabel totalCaloriesBurnedField = new JLabel("", JLabel.CENTER);
+	private JLabel BMIField = new JLabel("", JLabel.CENTER);
+	private JLabel averageCaloricIntakeField = new JLabel("", JLabel.CENTER);
+	private JLabel averageSleepQualityField = new JLabel("", JLabel.CENTER);
 	private JTextField submissionFields[][] = new JTextField[FIELD_NAMES.length][];
-	private JTextField calorie1, unsaturatedFat1, saturatedFat1, protein1, fiber1, carbohydrate1,
-	quality1, hour1, weight1, height1, bodyFatPercentage1, bmi1, waistSize1, duration1, caloriesBurned1, activity1;
-	private JTextField day1, month1, year1;
 
 	public void logWindow()
 	{
@@ -120,6 +120,7 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 		//Create text field and button
 		user = new JTextField("Username", 20);
 		pass = new JPasswordField("Password", 20);
+		pass.setText(null);
 		log = new Button("LOG IN");
 		sign = new Button("NEW USER? SIGN UP!");
 		log.addActionListener(this);
@@ -185,53 +186,36 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 		back.addActionListener(this);
 		display.addActionListener(this);
 
-		day1 = new JTextField("DAY");
-		month1 = new JTextField("MONTH");
-		year1 = new JTextField("YEAR");
-
-		mainMenu.add(day1);
-		mainMenu.add(month1);
-		mainMenu.add(year1);
+		mainMenu.add(date);
 		mainMenu.add(display);
 		mainMenu.add(submitB);
 		mainMenu.add(back);
 	}
 
 	public void submitWindow()
-	{
-		// date parameters for date input; arguments are:
-		//     the default date (today),
-		//     the earliest date enterable (January 1, 2000),
-		//     the latest date enterable (today),
-		//     the increment executed by clicking the spinner buttons (one day)
-		
-		SpinnerDateModel dateModel = new SpinnerDateModel(new Date(), new Date(946684800000L), new Date(), 0);
-		JLabel submissionLabels[][] = new JLabel[FIELD_NAMES.length][];
-		
-		for (int i = 0; i < submissionLabels.length; i++) {
-			submissionLabels[i] = new JLabel[FIELD_NAMES[i].length];
+	{		
+		for (int i = 0; i < FIELD_NAMES.length; i++) {
 			submissionFields[i] = new JTextField[FIELD_NAMES[i].length];
 		}
 		
 		// Instantiate submission window
 		
-		submit = new JFrame("Data Submission");
-		submit.setSize(500, 800);
-		submit.setLocationRelativeTo(null);
-		submit.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		submit.setLayout(new GridLayout(0, 2));
+		submitWindow = new JFrame("Data Submission");
+		submitWindow.setSize(500, 800);
+		submitWindow.setLocationRelativeTo(null);
+		submitWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		submitWindow.setLayout(new GridLayout(0, 2));
 
 		// Instantiate date selection
 		
-		date = new JSpinner(dateModel);
+		date = new JSpinner(new SpinnerDateModel(new Date(), new Date(946684800000L), new Date(), 0));
 		date.setEditor(new JSpinner.DateEditor(date, "MMMM dd, yyyy"));
 		
 		// Instantiate all submission fields
 		
 		for (int table = 0; table < FIELD_NAMES.length; table++) {
 			for (int attribute = 0; attribute < FIELD_NAMES[table].length; attribute++) {
-				submissionLabels[table][attribute] = new JLabel(this.getSubmissionFieldLabelText(table, attribute) + ":  ", JTextField.RIGHT);
-				submissionFields[table][attribute] = new JTextField(null);
+				submissionFields[table][attribute] = new JTextField("");
 				submissionFields[table][attribute].addFocusListener(this);
 			}
 		}
@@ -245,97 +229,118 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 
 		// Add data entry fields, using empty JLabels and JSeparators for visual adjustments
 
-		submit.add(new JLabel());
-		submit.add(new JLabel());
-		submit.add(new JLabel("Date: ", JTextField.RIGHT));
-		submit.add(date);
+		submitWindow.add(new JLabel());
+		submitWindow.add(new JLabel());
+		submitWindow.add(new JLabel("Date: ", JTextField.RIGHT));
+		submitWindow.add(date);
 		for (int table = 0; table < submissionFields.length; table++) {
-			submit.add(new JLabel());
-			submit.add(new JLabel());
-			submit.add(new JSeparator(JSeparator.HORIZONTAL));
-			submit.add(new JSeparator(JSeparator.HORIZONTAL));
+			submitWindow.add(new JLabel());
+			submitWindow.add(new JLabel());
+			submitWindow.add(new JSeparator(JSeparator.HORIZONTAL));
+			submitWindow.add(new JSeparator(JSeparator.HORIZONTAL));
 			for (int attribute = 0; attribute < submissionFields[table].length; attribute++) {
-				submit.add(submissionLabels[table][attribute]);
-				submit.add(submissionFields[table][attribute]);
+				submitWindow.add(new JLabel(this.getFieldLabelText(table, attribute) + ":  ", JLabel.RIGHT));
+				submitWindow.add(submissionFields[table][attribute]);
 			}
 		}
-		submit.add(new JLabel());
-		submit.add(new JLabel());
+		submitWindow.add(new JLabel());
+		submitWindow.add(new JLabel());
 		
 		// Add buttons
 
-		submit.add(submitEnter);
-		submit.add(submitBack);
+		submitWindow.add(submitEnter);
+		submitWindow.add(submitBack);
 
 	}
 
 	public void displayWindow()
 	{
-		//display window
-		displayWindow = new JFrame("DISPLAYING DATA");
-		displayWindow.setSize(600, 600);
-		displayWindow.setLocation(200, 20);
+		String formattedDate = new SimpleDateFormat("MMMM dd, yyyy").format(date.getModel().getValue());
+		
+		// Instantiate submission window
+		
+		displayWindow = new JFrame("Data Submission");
+		displayWindow.setSize(500, 800);
+		displayWindow.setLocationRelativeTo(null);
 		displayWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		displayWindow.setLayout(new GridLayout(8, 8));
+		displayWindow.setLayout(new GridLayout(0, 2));
 		
-		calorie1 = new JTextField("Caloric Intake: ", 20);
-		unsaturatedFat1 = new JTextField("Unsaturated Fat: ", 20);
-		saturatedFat1 = new JTextField("Saturated Fat: ", 20);
-		protein1 = new JTextField("Protein: ", 20);
-		fiber1 = new JTextField("Fiber: ", 20);
-		carbohydrate1 = new JTextField("Carbohydrate: ", 20);
-		quality1  = new JTextField("Quality: ", 2);
-		hour1  = new JTextField("Hours: ", 20);	
-		weight1 = new JTextField("Weight: ", 2);
-		height1 = new JTextField("Height: ", 2);
-		bodyFatPercentage1 = new JTextField("Body Fat Percentage: ", 2);
-		bmi1 = new JTextField("BMI: ", 20);
-		waistSize1 = new JTextField("Waist Size: ", 20);
-		duration1 = new JTextField("Duration: ", 20);
-		caloriesBurned1 = new JTextField("Calories Burned: ", 20);
-		activity1 = new JTextField("Name of Activity: ", 20);
-		
-		displayWindow.add(calorie1);
-		displayWindow.add(unsaturatedFat1);
-		displayWindow.add(saturatedFat1);
-		displayWindow.add(protein1);
-		displayWindow.add(protein1);
-		displayWindow.add(fiber1);
-		displayWindow.add(carbohydrate1);
-		displayWindow.add(quality1);
-		displayWindow.add(hour1);
-		displayWindow.add(weight1);
-		displayWindow.add(height1);
-		displayWindow.add(bodyFatPercentage1);
-		displayWindow.add(bmi1);
-		displayWindow.add(waistSize1);
-		displayWindow.add(duration1);
-		displayWindow.add(caloriesBurned1);
-		displayWindow.add(activity1);
+		// Instantiate button
 		
 		displayB = new Button("MAIN MENU");
 		displayB.addActionListener(this);
+
+		// Add display fields, using empty JLabels and JSeparators for visual adjustments
+
+		displayWindow.add(new JLabel());
+		displayWindow.add(new JLabel());
+		displayWindow.add(new JLabel("Date: ", JTextField.RIGHT));
+		displayWindow.add(new JLabel(formattedDate, JLabel.CENTER));
+		for (int table = 0; table < submissionFields.length; table++) {
+			displayWindow.add(new JLabel());
+			displayWindow.add(new JLabel());
+			displayWindow.add(new JSeparator(JSeparator.HORIZONTAL));
+			displayWindow.add(new JSeparator(JSeparator.HORIZONTAL));
+			for (int attribute = 0; attribute < submissionFields[table].length; attribute++) {
+				displayWindow.add(new JLabel(this.getFieldLabelText(table, attribute) + ":  ", JTextField.RIGHT));
+				displayWindow.add(displayFields[table][attribute]);
+			}
+			
+			// Add complex query fields
+			
+			if (table == ACTIVITY) {
+				displayWindow.add(new JLabel("Total Calories Burned:  ", JLabel.RIGHT));
+				displayWindow.add(totalCaloriesBurnedField);
+			}
+			else if (table == BODYMEASUREMENTS) {
+				displayWindow.add(new JLabel("Body Mass Index:  ", JLabel.RIGHT));
+				displayWindow.add(BMIField);
+			}
+			else if (table == NUTRITION) {
+				displayWindow.add(new JLabel("Average Caloric Intake:  ", JLabel.RIGHT));
+				displayWindow.add(averageCaloricIntakeField);
+			}
+			else if (table == SLEEP) {
+				displayWindow.add(new JLabel("Average Sleep Quality:  ", JLabel.RIGHT));
+				displayWindow.add(averageSleepQualityField);
+			}			
+		}
+		displayWindow.add(new JLabel());
+		displayWindow.add(new JLabel());
 		
 		displayWindow.add(displayB);
 	}
 
-	public void makeWindow()
+	public void makeGUI()
 	{
 		database = FitnessBuddy.connect(GUI.DEFAULT_CONNECTION_URL);
+		
+		// instantiate date
+
+		date = new JSpinner(new SpinnerDateModel(new Date(), new Date(946684800000L), new Date(), 0));
+		date.setEditor(new JSpinner.DateEditor(date, "MMMM dd, yyyy"));
+		
+		// Instantiate displayFields
+		
+		for (int table = 0; table < FIELD_NAMES.length; table++) {
+			displayFields[table] = new JLabel[FIELD_NAMES[table].length];
+			for (int attribute = 0; attribute < FIELD_NAMES[table].length; attribute++) {
+				displayFields[table][attribute] = new JLabel("", JLabel.CENTER);
+			}
+		}
+		
+		// form each window
 		
 		logWindow();
 		signWindow();
 		mainMenu();
 		submitWindow();
 		displayWindow();
+		
 		logWindow.setVisible(true);
 	}
 
-	/*
-	 * Returns the default text of a submission field given its index in submissionFields.
-	 * If index >= submissionFields.length, then @return == "".
-	 */
-	private String getSubmissionFieldLabelText(int table, int attribute) {
+	private String getFieldLabelText(int table, int attribute) {
 		
 		String defaultText = "";
 		
@@ -389,11 +394,11 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 		if (e.getSource() == submitB)
 		{
 			mainMenu.setVisible(false);
-			submit.setVisible(true);
+			submitWindow.setVisible(true);
 		}
 		if (e.getSource() == submitBack)
 		{
-			submit.setVisible(false);
+			submitWindow.setVisible(false);
 			mainMenu.setVisible(true);
 		}
 		if (e.getSource() == submitEnter)
@@ -401,7 +406,7 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 			try {
 				this.submitData();
 				this.displaySuccess("Data successfully submitted.");
-				submit.setVisible(false);
+				submitWindow.setVisible(false);
 				mainMenu.setVisible(true);
 			}
 			catch (Exception ex) {
@@ -415,7 +420,7 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 		}
 		if (e.getSource() == display)
 		{
-			displayAll();
+			this.displayAll();
 			mainMenu.setVisible(false);
 			displayWindow.setVisible(true);
 		}
@@ -516,7 +521,7 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 			// add the UserID and Date to the attributes
 			
 			attributeNames.append("UserID, Date");	
-			attributeValues.append("\""+ FitnessBuddy.getUserIDInDB(database, user.getText()) + "\", ?");
+			attributeValues.append("\"" + FitnessBuddy.getUserID(database, user.getText()) + "\", ?");
 			
 			// validate input
 			
@@ -529,12 +534,12 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 				
 				if (input.length() > 0) {
 					attributeNames.append(", " + this.getAttributeName(table, attribute));
-					if (FIELD_UNITS[table][attribute] == null)
-					{
+					if (FIELD_UNITS[table][attribute] == null) {
 						attributeValues.append(", \"" + input + "\"");
 					}
-					else
+					else {
 						attributeValues.append(", " + input);
+					}
 					valuesWereEntered = true;
 				}
 			}
@@ -552,8 +557,10 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 				
 				// turn it into a prepared statement
 				
+				java.sql.Date dateEntered = new java.sql.Date(new SimpleDateFormat("yyyy-MM-dd").parse(new SimpleDateFormat("yyyy-MM-dd").format(date.getModel().getValue())).getTime());
+				
 				statement = database.prepareStatement(insertStatement.toString());
-				statement.setDate(1, new java.sql.Date(System.currentTimeMillis()));
+				statement.setDate(1, dateEntered);
 				
 				// execute statement
 				
@@ -670,116 +677,105 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 		
 	}
 
-	
 	private void displayAll()
 	{
 		FitnessBuddy f = new FitnessBuddy();
-		int userID = Integer.parseInt(f.getUserIDInDB(database, user.getText()));
-		String date = year1.getText() + "-" + month1.getText() + "-" + day1.getText();
-		String queryStr = "SELECT * FROM Sleep WHERE UserID = ? AND `Date` = ?";
-		ResultSet resultSet = null;
-
-		PreparedStatement query;
-		try {
-			query = database.prepareStatement(queryStr);
-			query.setInt(1, userID);
-			query.setDate(2,new java.sql.Date(new SimpleDateFormat("yyyy-MM-dd").parse(date).getTime()));
-
-
-			resultSet = query.executeQuery();
-			quality1.setText("Quality: ");
-			hour1.setText("Hours: ");
-			if (resultSet.next()) 
-			{
-				quality1.setText(quality1.getText() + resultSet.getString(4));
-				hour1.setText(hour1.getText() + resultSet.getString(5));
-			}
-
-		} catch (Exception e1)
+		int userID = Integer.parseInt(f.getUserID(database, user.getText()));
+		String date = new SimpleDateFormat("yyyy-MM-dd").format(this.date.getModel().getValue());
+		
+		for (int table = 0; table < TABLE_NAMES.length; table++)
 		{
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			try {
+				String queryStr = "SELECT * FROM " + TABLE_NAMES[table] + " WHERE `UserID` = ? AND `Date` = ?";
+				PreparedStatement query = database.prepareStatement(queryStr);
+				ResultSet resultSet = null;
+
+				query.setInt(1, userID);
+				query.setDate(2, new java.sql.Date(new SimpleDateFormat("yyyy-MM-dd").parse(date).getTime()));
+
+				resultSet = query.executeQuery();
+
+				if (resultSet.next())
+				{
+					for (int attribute = 0; attribute < displayFields[table].length; attribute++)
+					{
+						displayFields[table][attribute].setText(resultSet.getString(attribute + 4));
+					}
+				}
+				this.evaluateComplexQueries(table);
+			} catch (Exception e1)
+			{
+				e1.printStackTrace();
+			}
 		}
 		
-		queryStr = "SELECT * FROM Nutrition  WHERE UserID = ? AND `Date` = ?";
-		try {
-			query = database.prepareStatement(queryStr);
-			query.setInt(1, userID);
-			query.setDate(2,new java.sql.Date(new SimpleDateFormat("yyyy-MM-dd").parse(date).getTime()));
+	}
 
+	private void evaluateComplexQueries(int table) throws Exception {
 
-			resultSet = query.executeQuery();
-			calorie1.setText("Calorie Intake: ");
-			unsaturatedFat1.setText("Unsaturated Fat: ");
-			saturatedFat1.setText("Saturated Fat: ");
-			protein1.setText("Protein: ");
-			fiber1.setText("Fiber: ");
-			carbohydrate1.setText("Carbohydrate: ");
-			
-			if (resultSet.next()) 
-			{
-				calorie1.setText(calorie1.getText() + resultSet.getString(4));
-				unsaturatedFat1.setText(unsaturatedFat1.getText() + resultSet.getString(5));
-				saturatedFat1.setText(saturatedFat1.getText() + resultSet.getString(6));
-				protein1.setText(protein1.getText() + resultSet.getString(7));
-				fiber1.setText(fiber1.getText() + resultSet.getString(8));
-				carbohydrate1.setText(carbohydrate1.getText() + resultSet.getString(9));
+		int userID = Integer.parseInt(FitnessBuddy.getUserID(database, user.getText()));
+		String dateString = new SimpleDateFormat("yyyy-MM-dd").format(date.getModel().getValue());
+		java.sql.Date sqlDate = new java.sql.Date(new SimpleDateFormat("yyyy-MM-dd").parse(dateString).getTime());
+		String query = null;
+		PreparedStatement statement = null;
+		ResultSet resultSet = null;
+
+		if (table == ACTIVITY) {
+
+			// Calculate total calories burned
+
+			query = "SELECT sum(CaloriesBurned) FROM Activity WHERE UserID = ?;";
+			statement = database.prepareStatement(query);
+			statement.setInt(1, userID);
+
+			resultSet = statement.executeQuery();
+
+			if (resultSet.next()) {
+				totalCaloriesBurnedField.setText("" + resultSet.getInt(1));
 			}
-
-		} catch (Exception e1)
-		{
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
 		}
-		queryStr = "SELECT * FROM BodyMeasurements  WHERE UserID = ? AND `Date` = ?";
-		try {
-			query = database.prepareStatement(queryStr);
-			query.setInt(1, userID);
-			query.setDate(2,new java.sql.Date(new SimpleDateFormat("yyyy-MM-dd").parse(date).getTime()));
+		else if (table == BODYMEASUREMENTS) {
 
+			// Calculate BMI
 
-			resultSet = query.executeQuery();
-			weight1.setText("Weight: ");
-			height1.setText("Height: ");
-			bodyFatPercentage1.setText("Body Fat Percentage: ");
-			bmi1.setText("BMI: ");
-			waistSize1.setText("Waist Size: ");
-			if (resultSet.next()) 
-			{
-				weight1.setText(weight1.getText() + resultSet.getString(4));
-				height1.setText(height1.getText() + resultSet.getString(5));
-				bodyFatPercentage1.setText(bodyFatPercentage1.getText() + resultSet.getString(6));
-				bmi1.setText(bmi1.getText() + resultSet.getString(7));
-				waistSize1.setText(waistSize1.getText() + resultSet.getString(8));
+			query = "SELECT (Weight * POWER(Height, 2) * .000028125) AS `BMI` FROM BodyMeasurements WHERE `UserID` = ? AND `Date` = ?;";
+			statement = database.prepareStatement(query);
+			statement.setInt(1, userID);
+			statement.setDate(2, sqlDate);
+
+			resultSet = statement.executeQuery();
+
+			if (resultSet.next()) {
+				BMIField.setText(String.format("%.2f", resultSet.getDouble(1)));
 			}
-
-		} catch (Exception e1)
-		{
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
 		}
-		queryStr = "SELECT * FROM Activity  WHERE UserID = ? AND `Date` = ?";
-		try {
-			query = database.prepareStatement(queryStr);
-			query.setInt(1, userID);
-			query.setDate(2,new java.sql.Date(new SimpleDateFormat("yyyy-MM-dd").parse(date).getTime()));
+		else if (table == NUTRITION) {
 
+			// Calculate average caloric intake
 
-			resultSet = query.executeQuery();
-			activity1.setText("Name of Activity: ");
-			duration1.setText("Duration: ");
-			caloriesBurned1.setText("Calories Burned: ");
-			if (resultSet.next()) 
-			{
-				activity1.setText(activity1.getText() + resultSet.getString(4));
-				duration1.setText(duration1.getText() + resultSet.getString(5));
-				caloriesBurned1.setText(caloriesBurned1.getText() + resultSet.getString(6));
+			query = "SELECT avg(CaloricIntake) FROM Nutrition WHERE UserID = ?;";
+			statement = database.prepareStatement(query);
+			statement.setInt(1, userID);
+
+			resultSet = statement.executeQuery();
+
+			if (resultSet.next()) {
+				averageCaloricIntakeField.setText("" + resultSet.getInt(1));
 			}
+		}
+		else if (table == SLEEP) {
 
-		} catch (Exception e1)
-		{
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			// Calculate average sleep quality
+
+			query = "SELECT avg(SleepQuality) FROM Sleep WHERE UserID = ?;";
+			statement = database.prepareStatement(query);
+			statement.setInt(1, userID);
+
+			resultSet = statement.executeQuery();
+
+			if (resultSet.next()) {
+				averageSleepQualityField.setText("" + resultSet.getInt(1));
+			}
 		}
 		
 	}
