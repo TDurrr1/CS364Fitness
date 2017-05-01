@@ -6,7 +6,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.sql.SQLException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -19,6 +18,7 @@ import javax.swing.JSeparator;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerDateModel;
+import javax.swing.event.ChangeListener;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -26,48 +26,52 @@ import java.sql.ResultSet;
 
 @SuppressWarnings("serial")
 public class GUI extends JFrame implements ActionListener, FocusListener {	
-
+	
 	/*** Class constants ***/
-
+	
 	public static final String DEFAULT_CONNECTION_URL = "jdbc:mysql://localhost/FitnessBuddy?user=example&password=password";
-
+	
 	/*
-	 * These constants are meant for easily accessing the information contained in the three-dimensional array below.
+	 * These constants are meant for easily accessing the information contained in the two-dimensional arrays below.
 	 */
 	// Dimension one: Data type
 	public static final int NAME = 0;
 	public static final int UNIT = 1;
 	public static final int MAX_LENGTH = 2;
-
+	
 	// Dimension two: Table
 	public static final int ACTIVITY = 0;
 	public static final int BODYMEASUREMENTS = 1;
 	public static final int NUTRITION = 2;
 	public static final int SLEEP = 3;
-
-	// Dimension three: Field
-	// (has no constants because the data stored differs from table to table)
-
-	/* The way these arrays are set up is as follows.
-	 *      - In each 2D array, there is one 1D array corresponding each of the alphabetically-ordered database tables:
-	 *         - Activity,
-	 *         - BodyMeasurements,
-	 *         - Nutrition, and
-	 *         - Sleep.
-	 *       (No data for UserId nor Date are stored here because they are either easily retrieved elsewhere or easy enough to
-	 *       enter manually.)
-	 *     - These are contained in the three 2D arrays which store the following data:
-	 *         - FIELD_NAMES: The user-friendly title of each piece of data to be entered.
-	 *             - NOTE: To get the attribute name for any field name, simply remove all spaces.
-	 *         - FIELD_UNITS: The spelled-out name of the unit which the correlating SUBMISSION_FIELD_NAMES value
-	 *           measured in. If this value is null, then this value doesn't have a unit.
-	 *         - FIELD_MAX_LENGTHS: The maximum length of each piece of data in SUBMISSION_FIELD_NAMES.
+	
+	public static final int MINIMUM = 0;
+	public static final int MAXIMUM = 1;
+	
+    /* The way these arrays are set up is as follows.
+     *      - In each 2D array, there is one 1D array corresponding each of the alphabetically-ordered database tables:
+     *         - Activity,
+     *         - BodyMeasurements,
+     *         - Nutrition, and
+     *         - Sleep.
+     *       (No data for UserId nor Date are stored here because they are either easily retrieved elsewhere or easy enough to
+     *       enter manually.)
+     *     - These are contained in the three 2D arrays which store the following data:
+     *         - FIELD_NAMES: The user-friendly title of each piece of data to be entered.
+     *             - NOTE: To get the attribute name for any field name, simply remove all spaces.
+     *         - FIELD_UNITS: The spelled-out name of the unit which the correlating SUBMISSION_FIELD_NAMES value
+     *           measured in. If this value is null, then this value doesn't have a unit.
+     *         - FIELD_LIMITS: The minimum and maximum value allowed for each field. If the corresponding value in FIELD_UNITS
+     *           is null, then maximum stores the max LENGTH of the String allowed.
 	 *           
 	 *     Thus, this format is the way in which data is accessed:
 	 *         FIELD_NAMES[<table>][<attribute>]
 	 *         
 	 *     For example, to find the name for the unit of the second attribute in the BodyMeasurements table, use...
 	 *         FIELD_UNITS[BODYMEASUREMENTS][1]
+	 *         
+	 *     To find the maximum allowed value for the above attribute, use...
+	 *         FIELD_LIMITS[BODYMEASUREMENTS][1][MAXIMUM]
 	 */
 	private final String FIELD_NAMES[][] = {
 			{"Activity name", "Activity duration", "Calories burned"},
@@ -76,19 +80,20 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 			{"Sleep quality", "Sleep length"}};
 	private final String FIELD_UNITS[][] = {
 			{null, "minutes", "kilocalories"},
-			{"pounds", "inches", null, null, "inches"},
+			{"pounds", "inches", "%", "kg/cm\u00b2", "inches"},
 			{"kilocalories", "grams", "grams", "grams", "grams", "grams"},
 			{"1-10", "hours"}};
-	private final int FIELD_MAX_LENGTHS[][] = {
-			{50, 3,  4            },
-			{3,  3,  2,  3,  3    },
-			{5,  3,  3,  3,  3,  3},
-			{2,  2                }};
-
+	private final int FIELD_LIMITS[][][] = {
+			{{0, 50},   {1, 600},  {1, 1000}},
+			{{25, 999}, {36, 108}, {2, 50}, {10, 99}, {15, 99}},
+			{{1, 9999}, {0, 310},  {0, 80}, {0, 280}, {0, 150}, {0, 1625}},
+			{{1, 10},   {0, 24}}};
+	private final String TABLE_NAMES[] = {"Activity", "BodyMeasurements", "Nutrition", "Sleep"};
+	
 	/*** Class variables ***/
-
+	
 	private Connection database = null;
-
+	
 	//Main window, button panel, buttons and timer
 	private JFrame logWindow, mainMenu, signWindow, displayWindow, submit;
 	private Button log, back, sign, submitB, submitUser, display;
@@ -179,7 +184,7 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 		submitB.addActionListener(this);
 		back.addActionListener(this);
 		display.addActionListener(this);
-
+		
 		day1 = new JTextField("DAY");
 		month1 = new JTextField("MONTH");
 		year1 = new JTextField("YEAR");
@@ -199,19 +204,17 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 		//     the earliest date enterable (January 1, 2000),
 		//     the latest date enterable (today),
 		//     the increment executed by clicking the spinner buttons (one day)
-
-		SpinnerDateModel dateModel = new SpinnerDateModel(new Date(),
-				new Date(946684800000L),
-				new Date(),
-				0);
+		
+		SpinnerDateModel dateModel = new SpinnerDateModel(new Date(), new Date(946684800000L), new Date(), 0);
 		JLabel submissionLabels[][] = new JLabel[FIELD_NAMES.length][];
+		
 		for (int i = 0; i < submissionLabels.length; i++) {
 			submissionLabels[i] = new JLabel[FIELD_NAMES[i].length];
 			submissionFields[i] = new JTextField[FIELD_NAMES[i].length];
 		}
-
+		
 		// Instantiate submission window
-
+		
 		submit = new JFrame("Data Submission");
 		submit.setSize(500, 800);
 		submit.setLocationRelativeTo(null);
@@ -219,21 +222,22 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 		submit.setLayout(new GridLayout(0, 2));
 
 		// Instantiate date selection
-
+		
 		date = new JSpinner(dateModel);
-
+		date.setEditor(new JSpinner.DateEditor(date, "MMMM dd, yyyy"));
+		
 		// Instantiate all submission fields
-
-		for (int table = 0; table < FIELD_MAX_LENGTHS.length; table++) {
-			for (int attribute = 0; attribute < FIELD_MAX_LENGTHS[table].length; attribute++) {
+		
+		for (int table = 0; table < FIELD_NAMES.length; table++) {
+			for (int attribute = 0; attribute < FIELD_NAMES[table].length; attribute++) {
 				submissionLabels[table][attribute] = new JLabel(this.getSubmissionFieldLabelText(table, attribute) + ":  ", JTextField.RIGHT);
 				submissionFields[table][attribute] = new JTextField(null);
 				submissionFields[table][attribute].addFocusListener(this);
 			}
 		}
-
+		
 		// Instantiate buttons
-
+		
 		submitEnter = new Button("SUBMIT DATA");
 		submitBack = new Button("MAIN MENU");
 		submitEnter.addActionListener(this);
@@ -245,19 +249,19 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 		submit.add(new JLabel());
 		submit.add(new JLabel("Date: ", JTextField.RIGHT));
 		submit.add(date);
-		for (int table = 0; table < submissionLabels.length; table++) {
+		for (int table = 0; table < submissionFields.length; table++) {
 			submit.add(new JLabel());
 			submit.add(new JLabel());
 			submit.add(new JSeparator(JSeparator.HORIZONTAL));
 			submit.add(new JSeparator(JSeparator.HORIZONTAL));
-			for (int attribute = 0; attribute < submissionLabels[table].length; attribute++) {
+			for (int attribute = 0; attribute < submissionFields[table].length; attribute++) {
 				submit.add(submissionLabels[table][attribute]);
 				submit.add(submissionFields[table][attribute]);
 			}
 		}
 		submit.add(new JLabel());
 		submit.add(new JLabel());
-
+		
 		// Add buttons
 
 		submit.add(submitEnter);
@@ -273,7 +277,7 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 		displayWindow.setLocation(200, 20);
 		displayWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		displayWindow.setLayout(new GridLayout(8, 8));
-
+		
 		calorie1 = new JTextField("Caloric Intake: ", 20);
 		unsaturatedFat1 = new JTextField("Unsaturated Fat: ", 20);
 		saturatedFat1 = new JTextField("Saturated Fat: ", 20);
@@ -290,7 +294,7 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 		duration1 = new JTextField("Duration: ", 20);
 		caloriesBurned1 = new JTextField("Calories Burned: ", 20);
 		activity1 = new JTextField("Name of Activity: ", 20);
-
+		
 		displayWindow.add(calorie1);
 		displayWindow.add(unsaturatedFat1);
 		displayWindow.add(saturatedFat1);
@@ -308,18 +312,17 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 		displayWindow.add(duration1);
 		displayWindow.add(caloriesBurned1);
 		displayWindow.add(activity1);
-
-
+		
 		displayB = new Button("MAIN MENU");
 		displayB.addActionListener(this);
-
+		
 		displayWindow.add(displayB);
 	}
 
 	public void makeWindow()
 	{
 		database = FitnessBuddy.connect(GUI.DEFAULT_CONNECTION_URL);
-
+		
 		logWindow();
 		signWindow();
 		mainMenu();
@@ -333,36 +336,35 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 	 * If index >= submissionFields.length, then @return == "".
 	 */
 	private String getSubmissionFieldLabelText(int table, int attribute) {
-
+		
 		String defaultText = "";
-
+		
 		if (table < FIELD_NAMES.length && attribute < FIELD_NAMES[table].length) {
 			defaultText = FIELD_NAMES[table][attribute];
 			if (FIELD_UNITS[table][attribute] != null) {
 				defaultText = defaultText + " (" + FIELD_UNITS[table][attribute] + ")";
 			}
 		}
-
+		
 		return defaultText;
-
+		
 	}
-
+	
 	@SuppressWarnings("deprecation")
 	@Override
 	public void actionPerformed(ActionEvent e) 
 	{
-		FitnessBuddy f = new FitnessBuddy();
 		if (e.getSource() == log)
 		{
-			if (!(f.isItemInDB(database, user.getText())))
+			if ((FitnessBuddy.isItemInDB(database, user.getText())))
 			{
 				displayError("We cannot find your username");
 			}
-			else if (f.isItemInDB(database, user.getText()) && !f.getPasswordInDB(database, user.getText()).equals(pass.getText()))
+			else if (!FitnessBuddy.isItemInDB(database, user.getText()) && FitnessBuddy.getPasswordInDB(database, user.getText()).equals(pass.getText()))
 			{
 				displayError("Wrong password");
 			}
-			else if (f.isItemInDB(database, user.getText()) && f.getPasswordInDB(database, user.getText()).equals(pass.getText()))
+			else if (!FitnessBuddy.isItemInDB(database, user.getText()) && !FitnessBuddy.getPasswordInDB(database, user.getText()).equals(pass.getText()))
 			{
 				logWindow.setVisible(false);
 				mainMenu.setVisible(true);
@@ -396,17 +398,13 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 		if (e.getSource() == submitEnter)
 		{
 			try {
-				if (this.submitData()) {
-					this.displaySuccess("Data successfully submitted.");
-					submit.setVisible(false);
-					mainMenu.setVisible(true);
-				}
-				else {
-					this.displayError("Data entry error", "Data not submitted. Check the submission window for errors.");
-				}
+				this.submitData();
+				this.displaySuccess("Data successfully submitted.");
+				submit.setVisible(false);
+				mainMenu.setVisible(true);
 			}
 			catch (Exception ex) {
-				this.displayError("Error caught!", "Error in submitData:\n" + ex.toString());
+				this.displayError("Data entry error", "Data not submitted. " + ex.getMessage());
 			}
 		}
 		if (e.getSource() == submitUser)
@@ -416,7 +414,6 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 		}
 		if (e.getSource() == display)
 		{
-			displayAll();
 			mainMenu.setVisible(false);
 			displayWindow.setVisible(true);
 		}
@@ -429,13 +426,13 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 
 	@Override
 	public void focusGained(FocusEvent e) {
-
+		
 		Object caller = e.getSource();
 		int table = 0;
 		int attribute = 0;
-
+		
 		// check if this is a JTextField from the submissionFields array
-
+		
 		while (table < submissionFields.length && !submissionFields[table][attribute].equals(caller)) {
 			attribute++;
 			if (attribute >= submissionFields[table].length) {
@@ -443,25 +440,24 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 				attribute = 0;
 			}
 		}
-
+		
 		// if table is still less than the length of submissionFields, the caller is a text field
-
+		
 		if (table < submissionFields.length) {
 			this.clearError(submissionFields[table][attribute]);
-			//this.displayPopup(false, "Yo.", "Focus was just gained by a submission field.");
 		}
-
+		
 	}
 
 	@Override
 	public void focusLost(FocusEvent e) {
-
+		
 		Object caller = e.getSource();
 		int table = 0;
 		int attribute = 0;
-
+		
 		// check if this is a JTextField from the submissionFields array
-
+		
 		while (table < submissionFields.length && !submissionFields[table][attribute].equals(caller)) {
 			attribute++;
 			if (attribute >= submissionFields[table].length) {
@@ -469,92 +465,204 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 				attribute = 0;
 			}
 		}
-
+		
 		// if table is still less than the length of submissionFields, the caller is a text field
-
+		
 		if (table < submissionFields.length) {
-
+			
 			// trim, then truncate input to no longer than its maximum length
-
+			
 			String formattedInput = submissionFields[table][attribute].getText().trim();
-			formattedInput = formattedInput.substring(0, Math.min(FIELD_MAX_LENGTHS[table][attribute], formattedInput.length()));
+			int maxInputLength;
+			
+			if (FIELD_UNITS[table][attribute] == null) {
+				maxInputLength = Math.min(FIELD_LIMITS[table][attribute][MAXIMUM], formattedInput.length());
+			}
+			else {
+				maxInputLength = Math.min(String.valueOf(FIELD_LIMITS[table][attribute][MAXIMUM]).length(), formattedInput.length());
+			}			
+			formattedInput = formattedInput.substring(0, maxInputLength);
 			submissionFields[table][attribute].setText(formattedInput);
 		}
-
+		
 	}
-
+	
 	private void setError(JComponent caller) {
-
+		
 		caller.setBackground(new Color(255, 127, 127)); // light red
-
+		
 	}
-
+	
 	private void clearError(JComponent caller) {
-
+		
 		caller.setBackground(Color.WHITE);
-
+		
 	}
+	
+	private void submitData() throws Exception {
+		
+		for (int table = 0; table < submissionFields.length; table++) {
+			
+			// instantiate
+			
+			PreparedStatement statement = null;
+			StringBuilder insertStatement = new StringBuilder("INSERT INTO " + TABLE_NAMES[table] + " (");
+			StringBuilder attributeNames = new StringBuilder();
+			StringBuilder attributeValues = new StringBuilder();
+			boolean valuesWereEntered = false;
+			
+			// add the UserID and Date to the attributes
+			
+			attributeNames.append("UserID, Date");	
+			attributeValues.append("1, ?");
+			
+			// validate input
+			
+			this.validateAllInput();
+			
+			// add any attributes which were input into the insert statements
+			
+			for (int attribute = 0; attribute < submissionFields[table].length; attribute++) {
+				String input = submissionFields[table][attribute].getText();
+				
+				if (input.length() > 0) {
+					attributeNames.append(", " + this.getAttributeName(table, attribute));
+					attributeValues.append(", " + input);
+					valuesWereEntered = true;
+				}
+			}
+			
+			// this only needs to be called if some values have been entered
+			
+			if (valuesWereEntered) {
+				
+				// create the full statement
 
-	private boolean submitData() throws SQLException {
-
-		boolean successfulSubmit = false;
-
-		// validate each box
-
-
-
-		// create the insert statements
-
-
-
-		String activityInsert = "INSERT INTO Activity (Item, Quantity) VALUES (?, ?)";
-		String sleepInsert = "INSERT INTO Sleep (Item, Quantity) VALUES (?, ?)";
-		String bodyMeasurementsInsert = "INSERT INTO BodyMeasurements (Item, Quantity) VALUES (?, ?)";
-		String nutritionInsert = "INSERT INTO Nutrition (Item, Quantity) VALUES (?, ?)";
-
-		PreparedStatement activityStatement = database.prepareStatement(activityInsert);
-		PreparedStatement sleepStatement = database.prepareStatement(sleepInsert);
-		PreparedStatement bodyMeasurementsStatement = database.prepareStatement(bodyMeasurementsInsert);
-		PreparedStatement nutritionStatement = database.prepareStatement(nutritionInsert);
-
-		activityStatement.executeUpdate();
-		sleepStatement.executeUpdate();
-		bodyMeasurementsStatement.executeUpdate();
-		nutritionStatement.executeUpdate();
-
-		return successfulSubmit;
-
+				insertStatement.append(attributeNames);
+				insertStatement.append(") VALUES (");
+				insertStatement.append(attributeValues);
+				insertStatement.append(");");
+				
+				// turn it into a prepared statement
+				
+				statement = database.prepareStatement(insertStatement.toString());
+				statement.setDate(1, new java.sql.Date(System.currentTimeMillis()));
+				
+				// execute statement
+				
+				statement.executeUpdate();
+			}
+		}
+		
 	}
-
+	
+	private void validateAllInput() throws Exception {
+		
+		for (int table = 0; table < submissionFields.length; table++) {
+			for (int attribute = 0; attribute < submissionFields[table].length; attribute++) {
+				if (FIELD_UNITS[table][attribute] != null) {
+					String input = submissionFields[table][attribute].getText();
+					if (input.length() > 0) {
+						if (this.isValidInteger(input, FIELD_LIMITS[table][attribute][MINIMUM], FIELD_LIMITS[table][attribute][MAXIMUM])) {
+						// good to go!
+						}
+						else {
+						// not within range; mark invalid
+						this.setError(submissionFields[table][attribute]);
+						throw new Exception(FIELD_NAMES[table][attribute] + " must be between " + 
+						                    FIELD_LIMITS[table][attribute][MINIMUM] + " and " +
+								            FIELD_LIMITS[table][attribute][MAXIMUM] + ", inclusive.");
+						}
+					}
+					
+				}
+			}
+		}
+		
+	}
+	
+	private String getAttributeName(int table, int attribute) {
+		
+		StringBuilder attributeName = new StringBuilder();
+		String attributeWords[] = FIELD_NAMES[table][attribute].split(" ");
+		
+		// Capitalize the first letter of each word
+		for (String word : attributeWords) {
+			attributeName.append(word.substring(0, 1) + word.substring(1));
+		}
+		
+		return attributeName.toString();
+		
+	}
+	
 	private void displaySuccess(String message) {
-
+		
 		this.displaySuccess("Success!", message);
-
+		
 	}
-
+	
 	private void displaySuccess(String title, String message) {
-
+		
 		this.displayPopup(false, title, message);
-
+		
 	}
-
+	
 	private void displayError(String message) {
-
+		
 		this.displayError("Error!", message);
-
+		
 	}
-
+	
 	private void displayError(String title, String message) {
-
+		
 		this.displayPopup(true, title, message);
-
+		
 	}
-
+	
 	private void displayPopup(boolean isError, String title, String message) {
-
+		
 		JOptionPane.showMessageDialog(null, message, title, (isError ? JOptionPane.ERROR_MESSAGE : JOptionPane.INFORMATION_MESSAGE));
-
+		
 	}
+	
+	public boolean isValidInteger(String input) {
+		
+		boolean isValid = false;
+		
+			try {
+				Integer.parseInt(input);
+				isValid = true;
+			}
+			catch (Exception e) {}
+			
+		return isValid;
+		
+	}
+	
+	public boolean isValidInteger(String input, int minimum, int maximum) {
+		
+		boolean isValid = false;
+		
+		if (isValidInteger(input) && valueIsInRange(new Double(input), minimum, maximum)) {
+			isValid = true;
+		}
+			
+		return isValid;
+		
+	}
+	
+	public boolean valueIsInRange(double input, double maximum, double minimum) {
+		
+		boolean isInRange = false;
+		
+		if (input >= minimum && input <= maximum) {
+			isInRange = true;
+		}
+		
+		return isInRange;
+		
+	}
+
 	
 	private void displayAll()
 	{
@@ -579,7 +687,7 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 				hour1.setText(hour1.getText() + resultSet.getString(5));
 			}
 
-		} catch (SQLException | ParseException e1)
+		} catch (Exception e1)
 		{
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -604,7 +712,7 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 				carbohydrate1.setText(carbohydrate1.getText() + resultSet.getString(9));
 			}
 
-		} catch (SQLException | ParseException e1)
+		} catch (Exception e1)
 		{
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -627,7 +735,7 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 				waistSize1.setText(waistSize1.getText() + resultSet.getString(8));
 			}
 
-		} catch (SQLException | ParseException e1)
+		} catch (Exception e1)
 		{
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -648,11 +756,12 @@ public class GUI extends JFrame implements ActionListener, FocusListener {
 				caloriesBurned1.setText(caloriesBurned1.getText() + resultSet.getString(6));
 			}
 
-		} catch (SQLException | ParseException e1)
+		} catch (Exception e1)
 		{
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		
 	}
+	
 }
